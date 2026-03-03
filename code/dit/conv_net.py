@@ -1,26 +1,15 @@
 import torch
 from torch import nn
+import torch.nn.functional as F
 
-from residual_block import residual_block
-from position_encoding import position_encoding
+from residual_block import ResidualBlock
+from position_encoding import PositionEncoding
 
 
 def get_image_shape():
-    return (3, 64, 64)
+    return (1, 28, 28)
 
-def build_network(config: dict, n_steps):
-    network_type = config.pop('type')
-    if network_type == 'ConvNet':
-        network_cls = conv_net
-    elif network_type == 'UNet':
-        network_cls = unet
-    else:
-        raise ValueError(f'Unknown network type: {network_type}')
-
-    network = network_cls(n_steps, **config)
-    return network
-
-class conv_net(nn.Module):
+class ConvNet(nn.Module):
     """
     Description: Conv-Net网络结构
     Author: Administrator
@@ -30,7 +19,7 @@ class conv_net(nn.Module):
                  pe_dim = 10, insert_t_to_all_layers = False):
         super().__init__()
         C, H, W = get_image_shape()
-        self.pe = position_encoding(n_steps, pe_dim)
+        self.pe = PositionEncoding(n_steps, pe_dim)
         self.pe_linear = nn.ModuleList()
         self.all_t = insert_t_to_all_layers
         # 是否需要给所有层插入位置信息，如果不需要则插入一层即可
@@ -40,7 +29,7 @@ class conv_net(nn.Module):
         self.residual_block = nn.ModuleList()
         pre_channel = C
         for channel in intermediate_channels:
-            self.residual_block.append(residual_block(pre_channel, channel))
+            self.residual_block.append(ResidualBlock(pre_channel, channel))
             if insert_t_to_all_layers:
                 self.pe_linear.append(nn.Linear(pre_channel, channel))
             else:
@@ -60,7 +49,7 @@ class conv_net(nn.Module):
         return x
 
 
-class unet(nn.Module):
+class UNet(nn.Module):
     def __init__(self, n_steps, channels=[10, 20, 40, 80],
                  pe_dim = 10, residual = False) -> None:
         super().__init__()
@@ -75,7 +64,7 @@ class unet(nn.Module):
             Hs.append(cH)
             Ws.append(cW)
 
-        self.pe = position_encoding(n_steps, pe_dim)
+        self.pe = PositionEncoding(n_steps, pe_dim)
         self.encoder = nn.ModuleList()
         self.decoder = nn.ModuleList()
         self.pe_linear_en = nn.ModuleList()
@@ -91,11 +80,11 @@ class unet(nn.Module):
                               nn.Linear(prev_channel, prev_channel),
                             ))
             self.encoder.append(nn.Sequential(
-                unet_block((prev_channel, cH, cW),
+                UnetBlock((prev_channel, cH, cW),
                            prev_channel,
                            channel,
                            residual=residual),
-                unet_block((channel, cH, cW),
+                UnetBlock((channel, cH, cW),
                            channel,
                            channel,
                            residual=residual)
@@ -106,11 +95,11 @@ class unet(nn.Module):
         self.pe_mid = nn.Linear(pe_dim, prev_channel)
         channel = channels[-1]
         self.mid = nn.Sequential(
-            unet_block((prev_channel, Hs[-1], Ws[-1]),
+            UnetBlock((prev_channel, Hs[-1], Ws[-1]),
                        prev_channel,
                        channel,
                        residual=residual),
-            unet_block((channel, Hs[-1], Ws[-1]),
+            UnetBlock((channel, Hs[-1], Ws[-1]),
                        channel,
                        channel,
                        residual=residual)
@@ -121,11 +110,11 @@ class unet(nn.Module):
             self.pe_linear_de.append(nn.Linear(pe_dim, prev_channel))
             self.ups.append(nn.ConvTranspose2d(prev_channel, channel, kernel_size=2, stride=2))
             self.decoder.append(nn.Sequential(
-                unet_block((channel * 2, cH, cW),
+                UnetBlock((channel * 2, cH, cW),
                            channel * 2,
                            channel,
                            residual=residual),
-                unet_block((channel, cH, cW),
+                UnetBlock((channel, cH, cW),
                            channel,
                            channel,
                            residual=residual)
@@ -145,12 +134,12 @@ class unet(nn.Module):
             x = down(x)
         pe = self.pe_mid(t).reshape(n, -1, 1, 1)
         x = self.mid(x + pe)
-        for pe_linear, decoder, up, encoder_out in zip(self.pe_linear_de, self.decoder, self.ups, encoder_outs):
+        for pe_linear, decoder, up, encoder_out in zip(self.pe_linear_de, self.decoder, self.ups, encoder_outs[::-1]):
             pe = pe_linear(t).reshape(n, -1, 1, 1)
             x = up(x)
             # 下采样的值
-            pad_x = encoder_out[2] - x.shape[2]
-            pad_y = encoder_out[3] - x.shape[3]
+            pad_x = encoder_out.shape[2] - x.shape[2]
+            pad_y = encoder_out.shape[3] - x.shape[3]
             x = F.pad(x, (pad_x // 2, pad_x - pad_x // 2, pad_y // 2, pad_y - pad_y // 2))
             x = torch.cat((encoder_out, x), dim=1)
             x = decoder(x + pe)
@@ -158,7 +147,7 @@ class unet(nn.Module):
         return x
 
 # unet网络结构block
-class unet_block(nn.Module):
+class UnetBlock(nn.Module):
     def __init__(self, shape, in_c, out_c, residual = False) -> None:
         super().__init__()
         self.ln = nn.LayerNorm(shape)
@@ -167,7 +156,7 @@ class unet_block(nn.Module):
         self.activation = nn.ReLU()
         self.residual = residual
         if residual:
-            if in_c != out_c:
+            if in_c == out_c:
                 self.residual_conv = nn.Identity()
             else:
                 self.residual_conv = nn.Conv2d(in_c, out_c, kernel_size=1)

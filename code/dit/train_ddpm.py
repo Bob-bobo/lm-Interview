@@ -64,7 +64,7 @@ def train(ddpm: DDPM, net, device, ckpt_path):
             loss.backward()
             optimizer.step()
             if batch % 100 == 0:
-                print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}')
+                print(f'Epoch [{epoch}/{n_epochs}], Step [{batch}/{n_steps}], Loss: {loss.item():.4f}')
     torch.save(net.state_dict(), ckpt_path)
 
 def main():

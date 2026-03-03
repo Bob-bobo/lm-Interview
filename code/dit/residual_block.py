@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 
-class residual_block(nn.Module):
+class ResidualBlock(nn.Module):
     """
     Description: 构建残差块
     Author: Administrator

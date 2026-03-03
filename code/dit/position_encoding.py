@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 
-class position_encoding(nn.Module):
+class PositionEncoding(nn.Module):
     """
     Description: 网络结构的位置编码信息
     Author: Administrator
