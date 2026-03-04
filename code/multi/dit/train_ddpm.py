@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, ToTensor, Lambda
 
 from conv_net import ConvNet, UNet
-from get_image_loader import get_image_loader
 from ddpm import DDPM
 
 unet_cfg = {
