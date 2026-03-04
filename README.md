@@ -8,10 +8,15 @@ this is the blog of LLM and MultiModal which is study method
 
 
 **学习路线**
--基础理论
--大语言模型
--多模态模型
+- 基础理论
+- 大语言模型
+  - 模型预训练
+- 多模态模型
   - 文生图片模型
+    - 扩散模型DIT（仅从全高斯噪音图片生成图片）
+      - U-Net网络结构
+      - Conv-Net网络结构
+    - 文图交叉模型
   - 文生视频模型
   - 文生音乐模型
   - 世界模型
