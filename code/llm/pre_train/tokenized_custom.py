@@ -1,6 +1,7 @@
+"""
+This module provides a custom tokenizer for demonstration purposes.
+"""
 import re
-
-import tiktoken
 
 
 class Tokenized_Custom:
@@ -11,10 +12,11 @@ class Tokenized_Custom:
     """
     def __init__(self, vocab):
         self.str_to_int = vocab
-        self.int_to_str = {i:s for s, i in vocab.items()}
+        self.int_to_str = {i: s for s, i in vocab.items()}
 
     def encoder(self, text):
-        preprocessed = re.split(r'([,.?_!"()\']|--|\s)')
+        """Encodes a string into a list of token IDs."""
+        preprocessed = re.split(r'([,curl.?_!"()\']|--|\\s)', text)
         # 这里将空格去除
         preprocessed = [item.strip() for item in preprocessed if item.strip()]
         # 这里将词表中没有的词使用unk标识符替代
@@ -24,30 +26,34 @@ class Tokenized_Custom:
         return ids
 
     def decoder(self, ids):
-        text = " ".join([self.int_to_str[id] for id in ids])
-        text = re.sub(r'\s+([,.?_!"()\'])', r'\1', text)
+        """Decodes a list of token IDs back into a string."""
+        text = " ".join([self.int_to_str[token_id] for token_id in ids])
+        text = re.sub(r'\\s+([,.?_!"()\'])', r'\\1', text)
         return text
 
-# 制作词表
 def get_vocab(raw_text):
-    vacab = re.split(r'([,.?_!"()\']|--|\s)', raw_text)
+    """Extracts a vocabulary from the raw text."""
+    vocab = re.split(r'([,.?_!"()\']|--|\\s)', raw_text)
     # 这里将空格去除
-    vacab = [item.strip() for item in vacab if item.strip()]
-    return vacab
+    vocab = [item.strip() for item in vocab if item.strip()]
+    return vocab
 
-def create_dataloader_custom(text, batch_size=4, max_length=256, stride=128, shuffle=True, drop_last=True):
-
+def create_dataloader_custom():
+    """Creates a dataloader for custom tokenization."""
     with open("data/the_tang.txt", encoding="utf-8") as f:
         raw_text = f.read()
 
     # 1、这是自定义的分词器，略显粗糙，权当学习基本概念
     all_vocabs = get_vocab(raw_text)
-    vocabs = sorted(list(set(all_vocabs)))   # 对分词的token做排序和去重
-    vocabs.extend(["<|endoftext|>", "<|unk|>"])
-    tokenize_custom = Tokenized_Custom(vocabs)
+    vocabs_list = sorted(list(set(all_vocabs)))   # 对分词的token做排序和去重
+    vocabs_list.extend(["<|endoftext|>", "<|unk|>"])
+    
+    # Create a dictionary mapping tokens to integers
+    vocab_dict = {token: i for i, token in enumerate(vocabs_list)}
+
+    tokenize_custom = Tokenized_Custom(vocab_dict)
     text = "you are so beautiful"
     ids = tokenize_custom.encoder(text)
     print("str_to_int: ", ids)
     text = tokenize_custom.decoder(ids)
     print("int_to_str: ", text)
-

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大模型 面试资料库</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <header class="top-header">
+    <div class="header-content">
+      <div class="header-left">
+        <a href="#" class="logo-link" onclick="showHome(); return false;">
+          <span class="logo-icon">📚</span>
+          <span class="logo-text">LLM Interview</span>
+        </a>
+      </div>
+      <div class="header-right">
+        <button id="home-btn" class="header-btn" onclick="showHome()" style="display: none;">
+          <span class="btn-icon">🏠</span>
+          <span>返回首页</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- 首页视图 -->
+    <div id="view-home" class="view active">
+      <div class="welcome-section">
+        <h1>👋 欢迎使用 大模型 面试资料库</h1>
+        <p>系统化整理大模型相关面试知识点，助你轻松应对面试</p>
+      </div>
+      
+      <div class="stats-section">
+        <div class="stat-card">
+          <span class="stat-icon">📄</span>
+          <span class="stat-value" id="total-docs">0</span>
+          <span class="stat-label">文档总数</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">📁</span>
+          <span class="stat-value" id="total-categories">0</span>
+          <span class="stat-label">知识分类</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🕐</span>
+          <span class="stat-value" id="last-updated">-</span>
+          <span class="stat-label">最近更新</span>
+        </div>
+      </div>
+
+      <h2 class="section-title">知识分类</h2>
+      <div class="categories-grid" id="categories-list">
+        <div class="loading-card">加载中...</div>
+      </div>
+
+      <h2 class="section-title">最近文档</h2>
+      <div class="recent-documents" id="recent-docs">
+        <div class="loading-card">加载中...</div>
+      </div>
+    </div>
+
+    <!-- 分类文档列表视图 -->
+    <div id="view-category" class="view" style="display: none;">
+      <div class="category-header">
+        <button class="back-btn" onclick="showHome()">
+          <span>←</span> 返回分类列表
+        </button>
+        <h1 id="category-title">分类名称</h1>
+      </div>
+      <div class="documents-list" id="documents-list">
+        <div class="loading-card">加载中...</div>
+      </div>
+    </div>
+
+    <!-- 文档阅读视图 -->
+    <div id="view-document" class="view" style="display: none;">
+      <article class="note-content">
+        <div class="note-header">
+          <h2 id="note-title"></h2>
+          <div class="note-meta">
+            <span class="meta-item" id="note-time"></span>
+            <span class="meta-item" id="note-category"></span>
+          </div>
+        </div>
+        <div id="note-body" class="note-body"></div>
+      </article>
+
+      <div class="document-footer-nav">
+        <button class="footer-nav-btn" id="footer-prev-btn" onclick="navigateDoc(-1)">
+          <div class="footer-nav-label">上一篇</div>
+          <div class="footer-nav-title" id="footer-prev-title">暂无</div>
+        </button>
+        <button class="footer-nav-btn" id="footer-next-btn" onclick="navigateDoc(1)">
+          <div class="footer-nav-label">下一篇</div>
+          <div class="footer-nav-title" id="footer-next-title">暂无</div>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
