@@ -13,19 +13,19 @@ app.use(express.static('public'));
 // 笔记文件目录（相对于项目根目录的 note 文件夹）
 const NOTES_DIR = path.join(__dirname, '..', '..', 'note');
 
-// 分类配置（根据文件名前缀自动识别）
-// 分类 ID 由文件名"-"前的前缀决定，这里配置分类显示名称和图标
-const CATEGORIES_CONFIG = {
-  '基础知识': { name: '基础知识', icon: '📖' },
-  '预训练': { name: '预训练', icon: '⚙️' },
-  '后训练': { name: '后训练', icon: '🔄' },
-  '强化学习': { name: '强化学习', icon: '🎮' },
-  '推理': { name: '推理', icon: '🚀' },
-  '优化': { name: '优化', icon: '📊' },
-  '工具': { name: '工具', icon: '🛠️' },
-  '大语言模型': { name: '大语言模型', icon: '🧠' },
-  '多模态': { name: '多模态', icon: '🎨' },
-  '其他': { name: '其他', icon: '📁' }
+// 分类图标配置（用于美化显示，不限制分类）
+const CATEGORY_ICONS = {
+  '基础知识': '📖',
+  '预训练': '⚙️',
+  '后训练': '🔄',
+  '强化学习': '🎮',
+  '推理': '🚀',
+  '优化': '📊',
+  '工具': '🛠️',
+  '大语言模型': '🧠',
+  '多模态': '🎨',
+  '微调': '🔧',
+  '其他': '📁'
 };
 
 // 从文件名提取分类（按"-"前的前缀）
@@ -34,45 +34,43 @@ function extractCategoryFromFilename(filename) {
   const parts = basename.split('-');
   if (parts.length > 0) {
     const prefix = parts[0].trim();
-    // 如果前缀在配置中存在，返回该前缀作为分类 ID
-    if (CATEGORIES_CONFIG[prefix]) {
-      return prefix;
-    }
+    return prefix;
   }
   return '其他';
 }
 
-// 获取分类配置
-function getCategoryConfig(categoryId) {
-  return CATEGORIES_CONFIG[categoryId] || CATEGORIES_CONFIG['其他'];
+// 获取分类图标
+function getCategoryIcon(categoryId) {
+  return CATEGORY_ICONS[categoryId] || '📁';
 }
 
 // API: 获取所有分类及文档列表
 app.get('/api/categories', (req, res) => {
   try {
-    // 构建分类列表（从配置中获取）
-    const categories = Object.keys(CATEGORIES_CONFIG).map(key => ({
-      id: key,
-      name: CATEGORIES_CONFIG[key].name,
-      icon: CATEGORIES_CONFIG[key].icon,
-      count: 0
-    }));
-
     if (!fs.existsSync(NOTES_DIR)) {
-      return res.json(categories);
+      return res.json([]);
     }
+
+    // 动态提取所有分类
+    const categoryMap = new Map();
 
     const files = fs.readdirSync(NOTES_DIR).filter(file => file.endsWith('.md'));
 
     files.forEach(file => {
       const categoryId = extractCategoryFromFilename(file);
-      const category = categories.find(c => c.id === categoryId);
-      if (category) {
-        category.count++;
+      if (!categoryMap.has(categoryId)) {
+        categoryMap.set(categoryId, {
+          id: categoryId,
+          name: categoryId,
+          icon: getCategoryIcon(categoryId),
+          count: 0
+        });
       }
+      categoryMap.get(categoryId).count++;
     });
 
-    res.json(categories);
+    // 转换为数组并返回
+    res.json(Array.from(categoryMap.values()));
   } catch (error) {
     console.error('Error reading categories:', error);
     res.status(500).json({ error: 'Failed to read categories' });
@@ -97,14 +95,12 @@ app.get('/api/category/:categoryId', (req, res) => {
         const firstLine = content.split('\n')[0] || '';
         const title = firstLine.startsWith('#') ? firstLine.replace(/^#+\s*/, '') : file.replace('.md', '');
         const fileCategoryId = extractCategoryFromFilename(file);
-        const categoryConfig = getCategoryConfig(fileCategoryId);
 
         return {
           filename: file,
           title: title.trim(),
           category: fileCategoryId,
-          categoryIcon: categoryConfig.icon,
-          categoryName: categoryConfig.name,
+          categoryIcon: getCategoryIcon(fileCategoryId),
           modifiedTime: stats.mtime.toISOString(),
           modifiedTimeFormatted: stats.mtime.toLocaleString('zh-CN', {
             year: 'numeric',
@@ -143,7 +139,6 @@ app.get('/api/notes', (req, res) => {
         const firstLine = content.split('\n')[0] || '';
         const title = firstLine.startsWith('#') ? firstLine.replace(/^#+\s*/, '') : file.replace('.md', '');
         const categoryId = extractCategoryFromFilename(file);
-        const categoryConfig = getCategoryConfig(categoryId);
 
         return {
           filename: file,
@@ -158,8 +153,7 @@ app.get('/api/notes', (req, res) => {
             minute: '2-digit'
           }),
           category: categoryId,
-          categoryIcon: categoryConfig.icon,
-          categoryName: categoryConfig.name
+          categoryIcon: getCategoryIcon(categoryId)
         };
       });
 
