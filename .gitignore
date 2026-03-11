@@ -214,3 +214,5 @@ __marimo__/
 vcs.xml
 workspace.xml
 profiles_settings.xml
+
+code/web/node_modules

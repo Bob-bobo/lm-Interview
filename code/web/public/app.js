@@ -178,7 +178,7 @@ async function showDocument(filename, index = -1, category = null) {
       document.getElementById('note-time').textContent = '🕐 ' + doc.modifiedTimeFormatted;
       const categoryInfo = appState.categories.find(c => c.id === doc.category);
       document.getElementById('note-category').textContent =
-        '📁 ' + (categoryInfo ? categoryInfo.name : doc.categoryName || '其他');
+        '📁 ' + (categoryInfo ? categoryInfo.name : doc.category || '其他');
     } else {
       // 如果找不到文档信息，使用默认值
       document.getElementById('note-time').textContent = '';
