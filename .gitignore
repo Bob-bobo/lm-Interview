@@ -216,3 +216,4 @@ workspace.xml
 profiles_settings.xml
 
 code/web/node_modules
+*.pt
