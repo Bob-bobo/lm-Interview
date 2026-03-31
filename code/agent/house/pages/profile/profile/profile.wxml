@@ -1,0 +1,140 @@
+<!-- pages/profile/profile/profile.wxml - 个人中心（云开发版） -->
+<view class="page-wrapper">
+  <!-- 用户头部 -->
+  <view class="profile-header">
+    <view class="avatar" wx:if="{{!loggedIn}}" bindtap="getUserProfile">
+      <text class="avatar-placeholder">点击登录</text>
+    </view>
+    <image class="avatar-img" wx:elif="{{profile.avatarUrl}}" src="{{profile.avatarUrl}}" mode="aspectFill" bindtap="goToEdit" />
+    <image class="avatar-img" wx:else src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="goToEdit" />
+    <view class="user-info">
+      <text class="user-name">{{loggedIn ? (profile.nickname || userInfo.nickName) : '买房助手用户'}}</text>
+      <text class="user-desc" wx:if="{{loggedIn}}">
+        {{profile.city ? profile.city + ' · ' : ''}}{{profile.budgetRange || '欢迎回来 👋'}}
+      </text>
+      <text class="user-desc" wx:else>理性购房，幸福安家</text>
+    </view>
+    <view class="login-btn" wx:if="{{!loggedIn}}" bindtap="getUserProfile">
+      <text class="login-text">登录</text>
+    </view>
+    <view class="edit-icon" wx:else bindtap="goToEdit">
+      <text>✏️</text>
+    </view>
+  </view>
+
+  <!-- 购房需求摘要（有数据时展示） -->
+  <view class="section demand-section" wx:if="{{profile.hasData}}">
+    <view class="demand-header">
+      <text class="demand-title">🏠 我的购房需求</text>
+      <text class="demand-edit" bindtap="goToEdit">编辑</text>
+    </view>
+    <view class="demand-grid">
+      <view class="demand-item" wx:if="{{profile.budgetRange}}">
+        <text class="demand-value">{{profile.budgetRange}}</text>
+        <text class="demand-label">预算范围</text>
+      </view>
+      <view class="demand-item" wx:if="{{profile.preferredArea}}">
+        <text class="demand-value">{{profile.preferredArea}}㎡</text>
+        <text class="demand-label">意向面积</text>
+      </view>
+      <view class="demand-item" wx:if="{{profile.preferredRooms}}">
+        <text class="demand-value">{{profile.preferredRooms}}</text>
+        <text class="demand-label">意向户型</text>
+      </view>
+      <view class="demand-item" wx:if="{{profile.district}}">
+        <text class="demand-value">{{profile.district}}</text>
+        <text class="demand-label">意向区域</text>
+      </view>
+    </view>
+    <view class="demand-tags" wx:if="{{profile.priorities.length > 0}}">
+      <text class="demand-tag" wx:for="{{profile.priorities}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+  <!-- 无数据引导 -->
+  <view class="section demand-empty" wx:elif="{{loggedIn}}">
+    <text class="empty-text">📝 完善购房需求，AI助手能更精准地为您匹配房源</text>
+    <view class="empty-btn" bindtap="goToEdit">
+      <text class="empty-btn-text">去完善</text>
+    </view>
+  </view>
+
+  <!-- 数据概览 -->
+  <view class="section stats-section">
+    <view class="stats-grid">
+      <view class="stat-card" bindtap="goToHouseList">
+        <text class="stat-num">{{houseCount}}</text>
+        <text class="stat-label">收藏房源</text>
+      </view>
+      <view class="stat-card" bindtap="goToDiary">
+        <text class="stat-num">{{diaryCount}}</text>
+        <text class="stat-label">看房日记</text>
+      </view>
+      <view class="stat-card" bindtap="goToCompare">
+        <text class="stat-num">{{calcCount}}</text>
+        <text class="stat-label">计算次数</text>
+      </view>
+      <view class="stat-card" bindtap="goToTrend">
+        <text class="stat-num">{{priceRecords}}</text>
+        <text class="stat-label">价格记录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="section menu-section">
+    <view class="menu-item" bindtap="goToEdit">
+      <text class="menu-icon">👤</text>
+      <text class="menu-text">编辑资料</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goToReminder">
+      <text class="menu-icon">⏰</text>
+      <text class="menu-text">提醒管理</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goToGuide">
+      <text class="menu-icon">📖</text>
+      <text class="menu-text">购房攻略</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goToSurrounding">
+      <text class="menu-icon">🗺️</text>
+      <text class="menu-text">周边配套</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goToTax">
+      <text class="menu-icon">📊</text>
+      <text class="menu-text">税费计算</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goToAIChat">
+      <text class="menu-icon">🤖</text>
+      <text class="menu-text">AI问答</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="exportData">
+      <text class="menu-icon">📤</text>
+      <text class="menu-text">导出数据</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="logout" wx:if="{{loggedIn}}">
+      <text class="menu-icon">🚪</text>
+      <text class="menu-text">退出登录</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item danger" bindtap="clearData">
+      <text class="menu-icon">🗑️</text>
+      <text class="menu-text">清除所有数据</text>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="section about-section">
+    <view class="about-info">
+      <text class="about-name">买房助手 v1.0.0</text>
+      <text class="about-desc">帮你选房、算价、避坑的贴心助手
+数据已同步至云端，多端可用</text>
+    </view>
+  </view>
+</view>

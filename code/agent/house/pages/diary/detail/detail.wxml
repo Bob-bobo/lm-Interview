@@ -1,0 +1,26 @@
+<!-- pages/diary/detail/detail.wxml -->
+<view class="page-wrapper">
+  <view class="container" wx:if="{{diary}}">
+    <view class="section">
+      <view class="diary-meta">
+        <text class="diary-house">{{diary.houseName || '未关联房源'}}</text>
+        <text class="diary-date">{{diary.dateStr}}</text>
+      </view>
+      <view class="diary-rating" wx:if="{{diary.rating}}">
+        <text class="stars">{{diary.ratingStars}}</text>
+      </view>
+      <view class="diary-tags" wx:if="{{diary.tags && diary.tags.length > 0}}">
+        <text class="tag tag-primary" wx:for="{{diary.tags}}" wx:key="index">{{item}}</text>
+      </view>
+      <view class="divider"></view>
+      <view class="diary-content">{{diary.content}}</view>
+    </view>
+
+    <view class="section" wx:if="{{diary.images && diary.images.length > 0}}">
+      <view class="section-title">📸 照片</view>
+      <view class="image-grid">
+        <image class="grid-image" wx:for="{{diary.images}}" wx:key="index" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}" />
+      </view>
+    </view>
+  </view>
+</view>

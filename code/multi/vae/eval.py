@@ -11,7 +11,7 @@ print(f"使用设备: {device}")
 
 # ==================== 超参数 ====================
 BATCH_SIZE = 128
-EPOCHS = 20
+EPOCHS = 100
 LEARNING_RATE = 1e-3
 LATENT_DIM = 20       # 隐变量维度 z 的维数
 HIDDEN_DIM = 400      # 隐藏层维度
@@ -501,13 +501,13 @@ def main():
     # ---- 4. 训练 ----
     print("🚀 开始训练...")
     print("-" * 60)
-    history = {'total_loss': [], 'recon_loss': [], 'kl_loss': []}
+    # history = {'total_loss': [], 'recon_loss': [], 'kl_loss': []}
 
     for epoch in range(1, EPOCHS + 1):
         total, recon, kl = train(model, train_loader, optimizer, epoch)
-        history['total_loss'].append(total)
-        history['recon_loss'].append(recon)
-        history['kl_loss'].append(kl)
+        # history['total_loss'].append(total)
+        # history['recon_loss'].append(recon)
+        # history['kl_loss'].append(kl)
 
         # 每 5 个 epoch 做一次测试评估
         if epoch % 5 == 0 or epoch == EPOCHS:
@@ -524,41 +524,41 @@ def main():
     print()
 
     # ---- 6. 可视化结果 ----
-    print("📊 生成可视化结果...")
-    print()
-
-    # 6.1 训练曲线
-    print("📈 [1/4] 绘制训练曲线...")
-    plot_training_curves(history, "training_curves.png")
-
-    # 6.2 重构效果
-    print("🔄 [2/4] 可视化重构效果...")
-    visualize_reconstruction(model, test_loader, num_images=8)
-
-    # 6.3 生成新图像
-    print("🎨 [3/4] 从隐空间采样生成新图像...")
-    visualize_generation(model, num_images=64)
-
-    # 6.4 隐空间插值
-    print("🔀 [4/4] 隐空间插值...")
-    visualize_interpolation(model, test_loader)
-
-    # 6.5 隐空间分布（可选，需要 sklearn）
-    try:
-        print("🔬 [5/5] 可视化隐空间分布...")
-        visualize_latent_space(model, test_loader)
-    except Exception as e:
-        print(f"  ⚠️  跳过隐空间可视化: {e}")
-
-    print()
-    print("=" * 60)
-    print("  全部完成！生成的图片文件：")
-    print("    - training_curves.png  (训练损失曲线)")
-    print("    - reconstruction.png    (重构效果对比)")
-    print("    - generation.png        (随机生成图像)")
-    print("    - interpolation.png     (隐空间插值)")
-    print("    - latent_space.png      (隐空间分布)")
-    print("=" * 60)
+    # print("📊 生成可视化结果...")
+    # print()
+    #
+    # # 6.1 训练曲线
+    # print("📈 [1/4] 绘制训练曲线...")
+    # plot_training_curves(history, "training_curves.png")
+    #
+    # # 6.2 重构效果
+    # print("🔄 [2/4] 可视化重构效果...")
+    # visualize_reconstruction(model, test_loader, num_images=8)
+    #
+    # # 6.3 生成新图像
+    # print("🎨 [3/4] 从隐空间采样生成新图像...")
+    # visualize_generation(model, num_images=64)
+    #
+    # # 6.4 隐空间插值
+    # print("🔀 [4/4] 隐空间插值...")
+    # visualize_interpolation(model, test_loader)
+    #
+    # # 6.5 隐空间分布（可选，需要 sklearn）
+    # try:
+    #     print("🔬 [5/5] 可视化隐空间分布...")
+    #     visualize_latent_space(model, test_loader)
+    # except Exception as e:
+    #     print(f"  ⚠️  跳过隐空间可视化: {e}")
+    #
+    # print()
+    # print("=" * 60)
+    # print("  全部完成！生成的图片文件：")
+    # print("    - training_curves.png  (训练损失曲线)")
+    # print("    - reconstruction.png    (重构效果对比)")
+    # print("    - generation.png        (随机生成图像)")
+    # print("    - interpolation.png     (隐空间插值)")
+    # print("    - latent_space.png      (隐空间分布)")
+    # print("=" * 60)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,154 @@
+<!-- pages/surrounding/surrounding/surrounding.wxml - 周边配套评估 -->
+<view class="page-wrapper">
+  <view class="container">
+
+    <!-- 房源选择 -->
+    <view class="section">
+      <view class="section-title">📍 选择房源评估周边配套</view>
+      <picker mode="selector" range="{{houseNames}}" value="{{houseIndex}}" bindchange="onHouseSelect">
+        <view class="house-picker">
+          <text class="house-picker-text {{houseIndex < 0 ? 'placeholder' : ''}}">
+            {{houseNames[houseIndex] || '请选择要评估的房源'}}
+          </text>
+          <text class="picker-arrow">▾</text>
+        </view>
+      </picker>
+      <view class="house-hint" wx:if="{{houseIndex < 0}}">
+        选择房源后可对其周边配套进行评分和记录
+      </view>
+    </view>
+
+    <block wx:if="{{houseIndex >= 0}}">
+
+      <!-- 雷达图 -->
+      <view class="section radar-section" wx:if="{{showRadar}}">
+        <view class="section-title-row">
+          <text class="section-title">📊 配套雷达图</text>
+        </view>
+        <view class="radar-wrap">
+          <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
+        </view>
+      </view>
+
+      <!-- 综合评分卡片 -->
+      <view class="section">
+        <view class="score-overview-card">
+          <view class="score-overview-left">
+            <text class="score-overview-label">综合评分</text>
+            <view class="score-overview-row">
+              <text class="score-overview-num">{{avgScore}}</text>
+              <text class="score-overview-max">/ 5.0</text>
+            </view>
+          </view>
+          <view class="score-overview-right">
+            <view class="score-level-badge" style="background:{{scoreLevelColor}}20; color:{{scoreLevelColor}}">
+              {{scoreLevel}}
+            </view>
+            <view class="score-actions">
+              <view class="action-btn" bindtap="autoScore">⚡ 智能评分</view>
+              <view class="action-btn reset" bindtap="resetScores">🔄 重置</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 五维评分 Slider -->
+      <view class="section">
+        <view class="section-title">⭐ 五维评分</view>
+        <view class="score-list">
+          <view class="score-item" wx:for="{{scoreItems}}" wx:key="key">
+            <view class="score-item-header">
+              <view class="score-item-left">
+                <text class="score-icon">{{item.icon}}</text>
+                <text class="score-name">{{item.name}}</text>
+              </view>
+              <view class="score-item-right">
+                <text class="score-value" style="color:{{item.color}}">{{item.value}}</text>
+                <text class="score-max">/5</text>
+              </view>
+            </view>
+            <view class="score-desc-text">{{item.desc}}</view>
+            <view class="score-bar-wrap">
+              <view class="score-bar-bg">
+                <view class="score-bar-fill" style="width:{{item.value * 20}}%; background:{{item.color}}"></view>
+              </view>
+              <slider
+                class="score-slider"
+                min="0" max="5" step="1" value="{{item.value}}"
+                activeColor="{{item.color}}" backgroundColor="#eee"
+                block-size="18"
+                data-key="{{item.key}}"
+                bindchange="onScoreChange"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 周边设施自检清单 -->
+      <view class="section">
+        <view class="section-title-row">
+          <text class="section-title">🏘️ 周边设施清单</text>
+          <text class="facility-stat">已选 {{facilityCount}}/{{facilityTotal}}</text>
+        </view>
+
+        <view class="facility-group" wx:for="{{facilityGroups}}" wx:key="name">
+          <view class="facility-group-header" data-group="{{index}}" bindtap="toggleGroup">
+            <text class="facility-group-name">{{item.name}}</text>
+            <text class="facility-group-count">{{item.items.length}}项</text>
+          </view>
+          <view class="facility-list">
+            <view class="facility-item" wx:for="{{item.items}}" wx:for-item="fi" wx:key="text">
+              <view class="facility-item-check" data-group="{{index}}" data-item="{{fi.text}}" bindtap="toggleFacility">
+                <view class="facility-checkbox {{fi.checked ? 'checked' : ''}}">
+                  <text wx:if="{{fi.checked}}">✓</text>
+                </view>
+                <text class="facility-text {{fi.checked ? 'checked' : ''}}">{{fi.text}}</text>
+              </view>
+              <view class="facility-distance-input" wx:if="{{fi.checked}}">
+                <input
+                  class="distance-input"
+                  type="digit"
+                  placeholder="距离(m)"
+                  value="{{fi.distance}}"
+                  data-group="{{index}}" data-item="{{fi.text}}"
+                  bindinput="onDistanceInput"
+                />
+                <text class="distance-unit">m</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 备注 -->
+      <view class="section">
+        <view class="section-title">📝 补充备注</view>
+        <textarea
+          class="notes-textarea"
+          placeholder="记录周边的其他情况，如：\n• 周边是否有工地施工\n• 是否靠近高架桥有噪音\n• 物业管理水平如何\n• 邻里环境怎样..."
+          value="{{notes}}"
+          bindinput="onNotesInput"
+          maxlength="500"
+          auto-height
+        />
+        <view class="notes-footer">
+          <text class="notes-count">{{notes.length}}/500</text>
+          <view class="save-btn" bindtap="saveNotes">保存备注</view>
+        </view>
+      </view>
+
+    </block>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{houses.length === 0}}">
+      <text class="empty-icon">🏠</text>
+      <text class="empty-text">暂无房源记录</text>
+      <text class="empty-hint">请先在「房源」页面添加房源</text>
+      <navigator url="/pages/house/add/add" open-type="navigate" class="empty-btn">
+        去添加房源
+      </navigator>
+    </view>
+
+  </view>
+</view>

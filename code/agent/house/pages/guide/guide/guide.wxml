@@ -1,0 +1,125 @@
+<!-- pages/guide/guide/guide.wxml - 购房攻略 -->
+<view class="page-wrapper">
+  <view class="container">
+    <!-- 攻略目录 -->
+    <view class="section">
+      <view class="section-title">📖 购房全流程攻略</view>
+      <view class="flow-steps">
+        <view class="flow-step" wx:for="{{steps}}" wx:key="index">
+          <view class="step-num">{{index + 1}}</view>
+          <view class="step-content">
+            <text class="step-title">{{item.title}}</text>
+            <text class="step-desc">{{item.desc}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 预置攻略列表 -->
+    <view class="section" wx:for="{{guides}}" wx:key="id">
+      <view class="guide-card" bindtap="toggleGuide" data-id="{{item.id}}">
+        <view class="guide-header">
+          <text class="guide-icon">{{item.icon}}</text>
+          <text class="guide-title">{{item.title}}</text>
+          <text class="guide-arrow {{expandedId === item.id ? 'open' : ''}}">▶</text>
+        </view>
+        <view class="guide-body" wx:if="{{expandedId === item.id}}">
+          <view class="guide-content">
+            <text wx:for="{{item.content}}" wx:for-item="line" wx:key="index" class="guide-line">{{line}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 我的攻略（自定义） -->
+    <view class="section" wx:if="{{customGuides.length > 0}}">
+      <view class="section-header">
+        <view class="section-title">✨ 我的攻略</view>
+        <text class="section-count">{{customGuides.length}}篇</text>
+      </view>
+      <view class="guide-card" wx:for="{{customGuides}}" wx:key="id">
+        <view class="guide-header" bindtap="toggleGuide" data-id="{{item.id}}">
+          <text class="guide-icon">{{item.icon}}</text>
+          <text class="guide-title">{{item.title}}</text>
+          <view class="custom-actions" catchtap="">
+            <text class="action-btn edit-btn" data-id="{{item.id}}" bindtap="editGuide">编辑</text>
+            <text class="action-btn del-btn" data-id="{{item.id}}" bindtap="deleteGuide">删除</text>
+          </view>
+        </view>
+        <view class="guide-body" wx:if="{{expandedId === item.id}}">
+          <view class="guide-content">
+            <text wx:for="{{item.content}}" wx:for-item="line" wx:key="index" class="guide-line">{{line}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 添加攻略按钮 -->
+    <view class="add-guide-section">
+      <view class="add-guide-btn" bindtap="showAddForm">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加我的攻略</text>
+      </view>
+    </view>
+
+    <!-- 购房清单 -->
+    <view class="section">
+      <view class="section-title">✅ 购房准备清单</view>
+      <view class="checklist">
+        <view class="check-item" wx:for="{{checklist}}" wx:key="index" bindtap="toggleCheck" data-index="{{index}}">
+          <view class="checkbox {{item.checked ? 'checked' : ''}}">
+            {{item.checked ? '✓' : ''}}
+          </view>
+          <text class="check-text {{item.checked ? 'checked' : ''}}">{{item.text}}</text>
+        </view>
+      </view>
+      <view class="check-progress">
+        <text>完成进度：{{checkedCount}}/{{checklist.length}}</text>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 新增攻略弹窗 -->
+  <view class="modal-mask" wx:if="{{showAddModal}}" id="modalMask" catchtap="onMaskTap">
+    <scroll-view class="modal-content" scroll-y enhanced show-scrollbar="{{false}}">
+      <view class="modal-header">
+        <text class="modal-title">📝 新增攻略</text>
+        <text class="modal-close" catchtap="hideAddForm">✕</text>
+      </view>
+      <view class="modal-body">
+        <!-- 图标选择 -->
+        <view class="form-label">选择图标</view>
+        <view class="icon-picker">
+          <view
+            class="icon-item {{iconSelected === item ? 'active' : ''}}"
+            wx:for="{{iconOptions}}"
+            wx:key="*this"
+            data-icon="{{item}}"
+            catchtap="selectIcon"
+          >{{item}}</view>
+        </view>
+        <!-- 标题 -->
+        <view class="form-label">攻略标题</view>
+        <input class="modal-input" placeholder="如：学区房选购攻略" value="{{newGuide.title}}" bindinput="onTitleInput" maxlength="30" />
+        <!-- 内容 -->
+        <view class="form-label">攻略内容</view>
+        <textarea
+          class="modal-textarea"
+          placeholder="请输入攻略内容，每行一个要点&#10;例如：&#10;确认学区划片范围&#10;了解学位占用政策&#10;关注学校升学率"
+          value="{{newGuide.content}}"
+          bindinput="onContentInput"
+          maxlength="2000"
+          auto-height="{{false}}"
+          cursor-spacing="20"
+        />
+      </view>
+      <view class="modal-footer">
+        <view class="modal-btn cancel-btn" catchtap="hideAddForm">取消</view>
+        <view class="modal-btn confirm-btn" catchtap="addGuide">保存</view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

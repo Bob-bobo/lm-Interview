@@ -1,0 +1,23 @@
+{
+  "description": "买房助手小程序 - 帮你选房、算价、避坑",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "setting": {
+    "cloudfunctionRoot": "cloudfunctions/",
+    "miniprogramRoot": "./",
+    "minified": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.3.4",
+  "appid": "wx75e9edc0d8c9caa9",
+  "projectname": "house-assistant",
+  "condition": {},
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {},
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudfunctionBase": "cloudfunctions/",
+  "miniprogramRoot": "./",
+  "cloudfunctionTemplateRoot": ""
+}

@@ -1,0 +1,201 @@
+<!-- pages/house/detail/detail.wxml - 房源详情 -->
+<view class="page-wrapper">
+  <view wx:if="{{house}}">
+    <!-- 顶部价格区 -->
+    <view class="detail-header">
+      <view class="header-info">
+        <view class="community-name">{{house.community}}</view>
+        <view class="house-brief">
+          <text wx:if="{{house.city}}">{{house.city}}</text>
+          <text wx:if="{{house.district}}"> · {{house.district}}</text>
+          <text wx:if="{{house.rooms}}"> · {{house.rooms}}室{{house.halls || 0}}厅</text>
+          <text wx:if="{{house.area}}"> · {{house.area}}㎡</text>
+          <text wx:if="{{house.orientation}}"> · {{house.orientation}}</text>
+          <text wx:if="{{house.floor}}"> · {{house.floor}}/{{house.totalFloor}}层</text>
+        </view>
+      </view>
+      <view class="header-price">
+        <text class="total-price">{{house.totalPrice}}</text>
+        <text class="price-unit">万</text>
+        <view class="unit-price" wx:if="{{unitPrice}}">{{unitPrice}}元/㎡</view>
+      </view>
+    </view>
+
+    <!-- 图片轮播 -->
+    <swiper class="image-swiper" wx:if="{{house.images && house.images.length > 0}}" indicator-dots="{{true}}" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#fff" autoplay="{{true}}" circular="{{true}}">
+      <swiper-item wx:for="{{house.images}}" wx:key="index">
+        <image class="swiper-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}" />
+      </swiper-item>
+    </swiper>
+
+    <!-- 基本信息 -->
+    <view class="section">
+      <view class="section-title">📋 基本信息</view>
+      <view class="info-grid">
+        <view class="info-item" wx:if="{{house.city}}">
+          <text class="info-label">所在城市</text>
+          <text class="info-value">{{house.city}}</text>
+        </view>
+        <view class="info-item" wx:if="{{house.district}}">
+          <text class="info-label">所在区域</text>
+          <text class="info-value">{{house.district}}</text>
+        </view>
+        <view class="info-item" wx:if="{{house.buildingNo}}">
+          <text class="info-label">楼栋/房号</text>
+          <text class="info-value">{{house.buildingNo}}</text>
+        </view>
+        <view class="info-item" wx:if="{{house.decoration}}">
+          <text class="info-label">装修情况</text>
+          <text class="info-value">{{house.decoration}}</text>
+        </view>
+        <view class="info-item" wx:if="{{house.buildingType}}">
+          <text class="info-label">建筑类型</text>
+          <text class="info-value">{{house.buildingType}}</text>
+        </view>
+        <view class="info-item" wx:if="{{house.buildYear}}">
+          <text class="info-label">建成年代</text>
+          <text class="info-value">{{house.buildYear}}年</text>
+        </view>
+        <view class="info-item" wx:if="{{house.source}}">
+          <text class="info-label">房源来源</text>
+          <text class="info-value">{{house.source}}</text>
+        </view>
+        <view class="info-item" wx:if="{{house.address}}">
+          <text class="info-label">详细地址</text>
+          <text class="info-value">{{house.address}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 价格详情 -->
+    <view class="section">
+      <view class="section-title">💰 价格详情</view>
+      <view class="info-grid">
+        <view class="info-item">
+          <text class="info-label">总价</text>
+          <text class="info-value price">{{house.totalPrice}}万</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">单价</text>
+          <text class="info-value">{{unitPrice || '--'}}元/㎡</text>
+        </view>
+        <view class="info-item" wx:if="{{house.askPrice}}">
+          <text class="info-label">报价</text>
+          <text class="info-value">{{house.askPrice}}万</text>
+        </view>
+        <view class="info-item" wx:if="{{house.expectedPrice}}">
+          <text class="info-label">心理价</text>
+          <text class="info-value">{{house.expectedPrice}}万</text>
+        </view>
+      </view>
+      <view class="price-diff" wx:if="{{house.askPrice && house.expectedPrice}}">
+        <text class="text {{priceDiff > 0 ? 'text-success' : 'text-error'}}">
+          {{priceDiff > 0 ? '心理价低于报价' : '心理价高于报价'}} {{Math.abs(priceDiff)}}万
+        </text>
+      </view>
+    </view>
+
+    <!-- 周边配套评分 -->
+    <view class="section" wx:if="{{hasScores}}">
+      <view class="section-title">⭐ 周边配套评分</view>
+      <view class="score-list">
+        <view class="score-row">
+          <text class="score-label">🚇 交通便利</text>
+          <view class="score-bar-bg">
+            <view class="score-bar-fill transport" style="width: {{house.transportScore * 20}}%"></view>
+          </view>
+          <text class="score-num">{{house.transportScore}}.0</text>
+        </view>
+        <view class="score-row">
+          <text class="score-label">🏫 教育配套</text>
+          <view class="score-bar-bg">
+            <view class="score-bar-fill education" style="width: {{house.educationScore * 20}}%"></view>
+          </view>
+          <text class="score-num">{{house.educationScore}}.0</text>
+        </view>
+        <view class="score-row">
+          <text class="score-label">🏥 医疗配套</text>
+          <view class="score-bar-bg">
+            <view class="score-bar-fill medical" style="width: {{house.medicalScore * 20}}%"></view>
+          </view>
+          <text class="score-num">{{house.medicalScore}}.0</text>
+        </view>
+        <view class="score-row">
+          <text class="score-label">🛒 商业配套</text>
+          <view class="score-bar-bg">
+            <view class="score-bar-fill shopping" style="width: {{house.shoppingScore * 20}}%"></view>
+          </view>
+          <text class="score-num">{{house.shoppingScore}}.0</text>
+        </view>
+        <view class="score-row">
+          <text class="score-label">🌳 居住环境</text>
+          <view class="score-bar-bg">
+            <view class="score-bar-fill environment" style="width: {{house.environmentScore * 20}}%"></view>
+          </view>
+          <text class="score-num">{{house.environmentScore}}.0</text>
+        </view>
+      </view>
+      <view class="total-score">
+        综合评分：<text class="score-big">{{avgScore}}</text> / 5.0
+      </view>
+    </view>
+
+    <!-- 价格走势 -->
+    <view class="section">
+      <view class="flex-between mb-16">
+        <view class="section-title" style="margin-bottom:0">📈 价格走势</view>
+        <button class="mini-btn" size="mini" bindtap="addPriceRecord">记录价格</button>
+      </view>
+      <view wx:if="{{priceHistory.length > 0}}">
+        <view class="trend-chart">
+          <view class="trend-bars">
+            <view class="trend-bar-wrapper" wx:for="{{priceHistory}}" wx:key="index">
+              <view class="trend-bar" style="height: {{item.barHeight}}%; background: {{item.color}}">
+              </view>
+              <text class="trend-date">{{item.dateLabel}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="trend-summary" wx:if="{{trendData}}">
+          <text>{{trendData.message}}</text>
+          <text class="trend-suggestion">💡 {{trendData.suggestion}}</text>
+        </view>
+      </view>
+      <view class="empty-hint" wx:else>
+        <text>暂无价格记录，点击右上角记录每次价格变动</text>
+      </view>
+    </view>
+
+    <!-- 备注 -->
+    <view class="section" wx:if="{{house.remark}}">
+      <view class="section-title">📝 备注</view>
+      <view class="remark-content">{{house.remark}}</view>
+    </view>
+
+    <!-- 记录时间 -->
+    <view class="record-time">
+      <text>创建于 {{createTimeStr}}</text>
+      <text wx:if="{{updateTimeStr}}"> · 最后更新 {{updateTimeStr}}</text>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-bar safe-bottom">
+      <view class="action-btn" bindtap="goToMortgage">
+        <text class="action-icon">💰</text>
+        <text>算房贷</text>
+      </view>
+      <view class="action-btn" bindtap="goToDiary">
+        <text class="action-icon">📝</text>
+        <text>看房日记</text>
+      </view>
+      <view class="action-btn" bindtap="goToEdit">
+        <text class="action-icon">✏️</text>
+        <text>编辑</text>
+      </view>
+      <view class="action-btn action-danger" bindtap="deleteHouse">
+        <text class="action-icon">🗑️</text>
+        <text>删除</text>
+      </view>
+    </view>
+  </view>
+</view>

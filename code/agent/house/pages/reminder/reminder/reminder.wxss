@@ -1,0 +1,29 @@
+/* pages/reminder/reminder/reminder.wxss */
+
+.reminder-card {
+  background: var(--bg-white); border: 2rpx solid var(--border-color); border-radius: var(--radius-md);
+  padding: 24rpx; margin-bottom: 16rpx;
+}
+.reminder-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8rpx; }
+.reminder-title { font-size: 30rpx; font-weight: 600; color: var(--text-primary); }
+.reminder-delete { font-size: 36rpx; color: var(--text-light); padding: 0 12rpx; }
+.reminder-date { font-size: 26rpx; color: var(--primary-color); display: block; margin-bottom: 8rpx; }
+.reminder-note { font-size: 24rpx; color: var(--text-light); display: block; }
+.reminder-status { margin-top: 12rpx; }
+
+.mini-btn {
+  background: var(--primary-light); color: var(--primary-color); font-size: 24rpx;
+  border: none; border-radius: 24rpx;
+}
+.mini-btn::after { border: none; }
+
+.template-list { display: flex; flex-direction: column; gap: 12rpx; }
+.template-item {
+  display: flex; align-items: center; gap: 16rpx; padding: 20rpx;
+  background: var(--bg-gray); border-radius: var(--radius-sm);
+}
+.template-item:active { background: var(--primary-light); }
+.template-icon { font-size: 36rpx; }
+.template-info { flex: 1; }
+.template-name { font-size: 28rpx; font-weight: 500; color: var(--text-primary); display: block; }
+.template-desc { font-size: 22rpx; color: var(--text-light); display: block; margin-top: 4rpx; }

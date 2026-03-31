@@ -1,0 +1,48 @@
+/* pages/calc/tax/tax.wxss */
+
+.form-group { margin-bottom: 28rpx; }
+.form-label { display: block; font-size: 26rpx; color: var(--text-primary); font-weight: 500; margin-bottom: 12rpx; }
+.form-input {
+  width: 100%; height: 80rpx; background: var(--bg-gray); border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-sm); padding: 0 24rpx; font-size: 28rpx; box-sizing: border-box;
+}
+
+.option-group { display: flex; gap: 16rpx; }
+.option-item {
+  flex: 1; text-align: center; padding: 20rpx; border-radius: var(--radius-sm);
+  background: var(--bg-gray); color: var(--text-secondary); font-size: 26rpx;
+  border: 2rpx solid transparent;
+}
+.option-item.active {
+  background: var(--primary-light); color: var(--primary-color); border-color: var(--primary-color); font-weight: 500;
+}
+
+.calc-btn { width: 100%; margin: 24rpx 0; }
+
+/* 结果 */
+.total-tax {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28rpx; background: linear-gradient(135deg, #fff1f0, #ffccc7);
+  border-radius: var(--radius-md); margin-bottom: 24rpx;
+}
+.total-label { font-size: 28rpx; color: var(--text-secondary); }
+.total-value { font-size: 48rpx; font-weight: 700; color: var(--error-color); }
+
+.tax-item { padding: 20rpx 0; border-bottom: 1rpx solid var(--border-color); }
+.tax-item:last-of-type { border-bottom: none; }
+.tax-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8rpx; }
+.tax-name { font-size: 28rpx; color: var(--text-primary); font-weight: 500; }
+.tax-amount { font-size: 30rpx; font-weight: 600; color: var(--error-color); }
+.tax-desc { font-size: 22rpx; color: var(--text-light); }
+
+/* 总成本 */
+.cost-summary { background: var(--bg-light-gray); border-radius: var(--radius-sm); padding: 20rpx 24rpx; margin-bottom: 24rpx; }
+.cost-row { display: flex; justify-content: space-between; padding: 12rpx 0; font-size: 28rpx; color: var(--text-secondary); }
+.cost-row.total { border-top: 2rpx solid var(--border-color); margin-top: 8rpx; padding-top: 16rpx; font-weight: 600; }
+.cost-value { color: var(--text-primary); font-weight: 500; }
+.cost-value.price { color: var(--error-color); }
+
+/* 提示 */
+.notice { background: #fffbe6; border-radius: var(--radius-sm); padding: 20rpx 24rpx; }
+.notice-title { font-size: 26rpx; font-weight: 600; color: #d48806; display: block; margin-bottom: 12rpx; }
+.notice-text { font-size: 22rpx; color: #ad6800; line-height: 1.8; white-space: pre-wrap; }

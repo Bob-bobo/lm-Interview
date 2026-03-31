@@ -1,0 +1,43 @@
+<!-- package-tools/pages/ruler/ruler.wxml - 面积测量工具 -->
+<view class="page-wrapper">
+  <view class="container">
+    <view class="section">
+      <view class="section-title">📐 面积换算工具</view>
+      <view class="form-group">
+        <text class="form-label">建筑面积（㎡）</text>
+        <input class="form-input" type="digit" placeholder="输入建筑面积" value="{{area}}" bindinput="onInput" data-field="area" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">得房率（%）</text>
+        <input class="form-input" type="digit" placeholder="常见75%-85%，多层可达90%+" value="{{ratio}}" bindinput="onInput" data-field="ratio" />
+      </view>
+      <view class="result-grid">
+        <view class="result-item">
+          <text class="result-label">套内面积</text>
+          <text class="result-value">{{innerArea}} ㎡</text>
+        </view>
+        <view class="result-item">
+          <text class="result-label">公摊面积</text>
+          <text class="result-value">{{sharedArea}} ㎡</text>
+        </view>
+        <view class="result-item">
+          <text class="result-label">实际使用率</text>
+          <text class="result-value">{{ratio}}%</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">📏 常用面积换算</view>
+      <view class="convert-item">
+        <text>1 亩 ≈ 666.67 ㎡</text>
+      </view>
+      <view class="convert-item">
+        <text>1 公顷 = 15 亩 = 10000 ㎡</text>
+      </view>
+      <view class="convert-item">
+        <text>1 平方英尺 ≈ 0.093 ㎡</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,357 @@
+/* pages/calc/mortgage/mortgage.wxss */
+
+.method-tabs {
+  display: flex;
+  background: var(--bg-white);
+  padding: 0 24rpx;
+  box-shadow: var(--shadow);
+}
+
+.method-tab {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 0;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  position: relative;
+}
+
+.method-tab.active {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.method-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 28rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 26rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 12rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  background: var(--bg-gray);
+  border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+/* 首付比例 */
+.ratio-marks {
+  display: flex;
+  justify-content: space-between;
+  padding: 8rpx 4rpx;
+}
+
+.ratio-marks text {
+  font-size: 22rpx;
+  color: var(--text-light);
+  padding: 4rpx 12rpx;
+}
+
+.ratio-marks text:active {
+  color: var(--primary-color);
+}
+
+.down-payment-info {
+  display: flex;
+  gap: 24rpx;
+  padding: 24rpx;
+  background: var(--bg-light-gray);
+  border-radius: var(--radius-sm);
+  margin-bottom: 28rpx;
+}
+
+.dp-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.dp-label {
+  font-size: 24rpx;
+  color: var(--text-light);
+}
+
+.dp-value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dp-value.primary {
+  color: var(--primary-color);
+}
+
+/* 贷款期限 */
+.term-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.term-option {
+  padding: 14rpx 32rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  background: var(--bg-gray);
+  color: var(--text-secondary);
+  border: 2rpx solid transparent;
+}
+
+.term-option.active {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* 利率预设 */
+.rate-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.rate-preset {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.rate-preset:active {
+  opacity: 0.7;
+}
+
+/* 计算按钮 */
+.calc-btn {
+  width: 100%;
+  margin: 24rpx 0 32rpx;
+}
+
+/* 结果卡片 */
+.result-cards {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 32rpx;
+}
+
+.result-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 12rpx;
+  background: var(--bg-light-gray);
+  border-radius: var(--radius-md);
+}
+
+.result-card-value {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+}
+
+.result-card-value.price {
+  color: var(--error-color);
+}
+
+.result-card-unit {
+  font-size: 22rpx;
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* 额外信息 */
+.extra-info {
+  background: var(--bg-light-gray);
+  border-radius: var(--radius-sm);
+  padding: 20rpx 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8rpx 0;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+/* 还款构成图 */
+.chart-section {
+  margin-bottom: 24rpx;
+}
+
+.chart-title {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 16rpx;
+}
+
+.pie-visual {
+  display: flex;
+  height: 32rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin-bottom: 16rpx;
+}
+
+.pie-principal, .pie-interest {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.pie-legend {
+  display: flex;
+  gap: 32rpx;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+}
+
+/* 还款能力 */
+.income-input {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.income-field {
+  flex: 1;
+  height: 64rpx;
+  background: var(--bg-gray);
+  border-radius: var(--radius-sm);
+  padding: 0 16rpx;
+  font-size: 28rpx;
+}
+
+.afford-result {
+  padding: 24rpx;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24rpx;
+}
+
+.afford-safe {
+  background: #f6ffed;
+  border: 2rpx solid #b7eb8f;
+}
+
+.afford-warning {
+  background: #fffbe6;
+  border: 2rpx solid #ffe58f;
+}
+
+.afford-danger {
+  background: #fff1f0;
+  border: 2rpx solid #ffa39e;
+}
+
+.afford-ratio {
+  font-size: 32rpx;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.afford-safe .afford-ratio { color: var(--success-color); }
+.afford-warning .afford-ratio { color: var(--warning-color); }
+.afford-danger .afford-ratio { color: var(--error-color); }
+
+.afford-advice {
+  font-size: 24rpx;
+  display: block;
+  line-height: 1.6;
+}
+
+.afford-safe .afford-advice { color: #389e0d; }
+.afford-warning .afford-advice { color: #d48806; }
+.afford-danger .afford-advice { color: #cf1322; }
+
+/* 还款明细 */
+.schedule-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.toggle-arrow {
+  font-size: 24rpx;
+}
+
+.schedule-list {
+  margin-top: 16rpx;
+  border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.schedule-header {
+  display: flex;
+  background: var(--bg-gray);
+  padding: 16rpx 0;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.schedule-row {
+  display: flex;
+  padding: 12rpx 0;
+  font-size: 22rpx;
+  color: var(--text-primary);
+  border-top: 1rpx solid var(--border-color);
+}
+
+.sh-col, .sr-col {
+  flex: 1;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

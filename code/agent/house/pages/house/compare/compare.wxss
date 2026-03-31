@@ -1,0 +1,163 @@
+/* pages/house/compare/compare.wxss */
+
+.compare-header {
+  padding: 24rpx 0;
+}
+
+.compare-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.compare-subtitle {
+  font-size: 24rpx;
+  color: var(--text-light);
+}
+
+.compare-scroll {
+  margin: 0 -24rpx;
+  padding: 0 24rpx;
+}
+
+.compare-table {
+  border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.table-row {
+  display: flex;
+}
+
+.table-row.alt {
+  background: var(--bg-light-gray);
+}
+
+.header-row {
+  background: linear-gradient(135deg, #1890ff, #096dd9);
+}
+
+.table-cell {
+  min-width: 180rpx;
+  padding: 20rpx 16rpx;
+  font-size: 26rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1rpx solid var(--border-color);
+  box-sizing: border-box;
+}
+
+.table-cell:last-child {
+  border-right: none;
+}
+
+.label-cell {
+  min-width: 180rpx;
+  max-width: 180rpx;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-gray);
+  font-size: 24rpx;
+}
+
+.header-row .label-cell {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.value-cell {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.house-thumb {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+}
+
+.compare-price {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.compare-price.best {
+  color: var(--success-color);
+}
+
+.best-tag {
+  font-size: 20rpx;
+  color: var(--success-color);
+  background: #f6ffed;
+  padding: 2rpx 10rpx;
+  border-radius: 4rpx;
+  margin-top: 4rpx;
+}
+
+.score.best {
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+.summary-row {
+  background: var(--primary-light) !important;
+}
+
+.total-score-badge {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--primary-color);
+  padding: 8rpx 24rpx;
+  border-radius: 12rpx;
+  background: rgba(24, 144, 255, 0.1);
+}
+
+.total-score-badge.best {
+  background: var(--primary-color);
+  color: #ffffff;
+  padding: 8rpx 32rpx;
+  border-radius: 12rpx;
+}
+
+.recommend-row {
+  background: #fffbe6 !important;
+}
+
+.recommend-badge {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #d48806;
+}
+
+.not-recommend {
+  color: var(--text-light);
+}
+
+/* 分析总结 */
+.summary-section {
+  margin-top: 24rpx;
+}
+
+.summary-item {
+  padding: 8rpx 0;
+}
+
+.summary-bullet {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.action-area {
+  padding: 24rpx;
+}
+
+.action-area-btn {
+  width: 100%;
+}

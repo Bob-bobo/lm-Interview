@@ -1,0 +1,228 @@
+/* pages/house/add/add.wxss */
+
+.form-group {
+  margin-bottom: 28rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 26rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 12rpx;
+}
+
+.required {
+  color: var(--error-color);
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  background-color: var(--bg-gray);
+  border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.form-input-focus {
+  border-color: var(--primary-color);
+  background-color: var(--bg-white);
+}
+
+.form-picker {
+  height: 80rpx;
+  line-height: 80rpx;
+  background-color: var(--bg-gray);
+  border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+}
+
+.form-picker.placeholder {
+  color: var(--text-light);
+}
+
+.form-row {
+  display: flex;
+  gap: 20rpx;
+}
+
+.form-row .form-group {
+  margin-bottom: 28rpx;
+}
+
+.form-row .form-input {
+  width: 100%;
+}
+
+.form-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.form-tag {
+  padding: 12rpx 28rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  background-color: var(--bg-gray);
+  color: var(--text-secondary);
+  border: 2rpx solid transparent;
+}
+
+.form-tag.active {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.form-textarea {
+  width: 100%;
+  height: 200rpx;
+  background-color: var(--bg-gray);
+  border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 22rpx;
+  color: var(--text-light);
+  margin-top: 8rpx;
+}
+
+.form-hint {
+  font-size: 22rpx;
+  color: var(--text-light);
+  margin-top: 8rpx;
+  display: block;
+}
+
+.room-picker {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.room-picker .form-picker {
+  flex: 1;
+  text-align: center;
+}
+
+.room-sep {
+  font-size: 28rpx;
+  color: var(--text-light);
+}
+
+/* 评分 */
+.score-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.score-item:last-child {
+  border-bottom: none;
+}
+
+.score-label {
+  font-size: 28rpx;
+  color: var(--text-primary);
+}
+
+.score-stars {
+  display: flex;
+  gap: 8rpx;
+}
+
+.star {
+  font-size: 40rpx;
+  color: #ddd;
+  transition: color 0.2s;
+}
+
+.star.active {
+  color: #faad14;
+}
+
+/* 图片 */
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.image-item {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-delete {
+  position: absolute;
+  top: 4rpx;
+  right: 4rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+}
+
+.image-add {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: var(--radius-sm);
+  border: 2rpx dashed var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-light-gray);
+}
+
+.image-add-icon {
+  font-size: 56rpx;
+  color: var(--text-light);
+  line-height: 1;
+}
+
+.image-add-text {
+  font-size: 22rpx;
+  color: var(--text-light);
+  margin-top: 8rpx;
+}
+
+/* 提交 */
+.submit-area {
+  padding: 32rpx 24rpx;
+}
+
+.submit-btn {
+  width: 100%;
+}

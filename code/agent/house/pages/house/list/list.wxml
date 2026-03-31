@@ -1,0 +1,102 @@
+<!-- pages/house/list/list.wxml - 房源列表 -->
+<view class="page-wrapper">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索小区名称、地址..." value="{{keyword}}" bindinput="onSearch" bindconfirm="onSearch" />
+      <text class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">×</text>
+    </view>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-item {{currentFilter === 'all' && !selectedCity ? 'active' : ''}}" bindtap="onFilter" data-filter="all">
+      全部 <text class="filter-count">{{total}}</text>
+    </view>
+    <view class="filter-item {{cityFilter === 'city' ? 'active' : ''}}" bindtap="showCityPicker">
+      {{selectedCity || '城市'}}
+    </view>
+    <view class="filter-item {{currentFilter === 'district' ? 'active' : ''}}" bindtap="showDistrictPicker">
+      {{selectedDistrict || '区域'}}
+    </view>
+    <view class="filter-item {{currentFilter === 'price' ? 'active' : ''}}" bindtap="showPricePicker">
+      价格
+    </view>
+    <view class="filter-item {{currentSort !== 'time' ? 'active' : ''}}" bindtap="showSortPicker">
+      {{currentSort === 'time' ? '最新' : '价格'}}
+    </view>
+  </view>
+
+  <!-- 房源列表 -->
+  <view class="house-list" wx:if="{{filteredHouses.length > 0}}">
+    <view class="house-card" wx:for="{{filteredHouses}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+      <!-- 图片区域 -->
+      <view class="card-image" wx:if="{{item.images && item.images.length > 0}}">
+        <image class="card-img" src="{{item.images[0]}}" mode="aspectFill" />
+        <view class="card-image-count">{{item.images.length}}张</view>
+      </view>
+      <view class="card-image card-image-placeholder" wx:else>
+        <text class="placeholder-icon">🏠</text>
+      </view>
+
+      <!-- 信息区域 -->
+      <view class="card-info">
+        <view class="card-top">
+          <view class="card-name">{{item.community || '未命名房源'}}</view>
+          <view class="card-price">
+            <text class="price-num">{{item.totalPrice}}</text>
+            <text class="price-unit">万</text>
+          </view>
+        </view>
+        <view class="card-tags">
+          <text class="tag tag-primary" wx:if="{{item.rooms}}">{{item.rooms}}室{{item.halls || 0}}厅</text>
+          <text class="tag tag-primary" wx:if="{{item.area}}">{{item.area}}㎡</text>
+          <text class="tag tag-primary" wx:if="{{item.orientation}}">{{item.orientation}}</text>
+          <text class="tag tag-success" wx:if="{{item.decoration}}">{{item.decoration}}</text>
+        </view>
+        <view class="card-meta">
+          <text wx:if="{{item.city}}">{{item.city}}</text>
+          <text wx:if="{{item.district}}"> · {{item.district}}</text>
+          <text wx:if="{{item.unitPrice}}">{{item.unitPrice}}元/㎡</text>
+          <text wx:if="{{item.floor}}"> · {{item.floor}}/{{item.totalFloor}}层</text>
+        </view>
+        <view class="card-bottom">
+          <text class="card-source" wx:if="{{item.source}}">{{item.source}}</text>
+          <text class="card-time">{{item.timeAgo}}</text>
+        </view>
+      </view>
+
+      <!-- 比较复选框 -->
+      <view class="card-checkbox" catchtap="toggleCompare" data-id="{{item.id}}">
+        <view class="checkbox {{compareIds.indexOf(item.id) >= 0 ? 'checked' : ''}}">
+          {{compareIds.indexOf(item.id) >= 0 ? '✓' : ''}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{filteredHouses.length === 0 && !loading}}">
+    <text class="icon">🏠</text>
+    <view class="text">
+      <text wx:if="{{keyword}}">未找到相关房源\n</text>
+      <text wx:else>还没有收藏房源\n</text>
+      <text>点击下方按钮添加吧！</text>
+    </view>
+    <button class="btn-primary mt-32" style="width:300rpx" bindtap="goToAdd">+ 添加房源</button>
+  </view>
+
+  <!-- 对比浮层 -->
+  <view class="compare-bar safe-bottom" wx:if="{{compareIds.length >= 2}}">
+    <view class="compare-info">
+      <text>已选{{compareIds.length}}套</text>
+    </view>
+    <button class="compare-btn" bindtap="goToCompare">开始对比</button>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="fab safe-bottom" wx:if="{{compareIds.length < 2}}" bindtap="goToAdd">
+    <text style="font-size:48rpx">+</text>
+  </view>
+</view>

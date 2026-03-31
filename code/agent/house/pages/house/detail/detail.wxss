@@ -1,0 +1,286 @@
+/* pages/house/detail/detail.wxss */
+
+.detail-header {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  padding: 40rpx 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.community-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12rpx;
+}
+
+.house-brief {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.total-price {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.header-price .price-unit {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.unit-price {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: right;
+  margin-top: 4rpx;
+}
+
+/* 图片轮播 */
+.image-swiper {
+  height: 400rpx;
+}
+
+.swiper-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 信息网格 */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24rpx;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: var(--text-light);
+  margin-bottom: 8rpx;
+}
+
+.info-value {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* 价格差异 */
+.price-diff {
+  text-align: center;
+  margin-top: 16rpx;
+  padding: 16rpx;
+  background: var(--bg-gray);
+  border-radius: var(--radius-sm);
+}
+
+.price-diff .text {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+/* 评分条 */
+.score-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.score-row .score-label {
+  width: 160rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.score-bar-bg {
+  flex: 1;
+  height: 16rpx;
+  background: var(--bg-gray);
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  transition: width 0.5s ease;
+}
+
+.score-bar-fill.transport { background: linear-gradient(90deg, #1890ff, #096dd9); }
+.score-bar-fill.education { background: linear-gradient(90deg, #722ed1, #531dab); }
+.score-bar-fill.medical { background: linear-gradient(90deg, #f5222d, #cf1322); }
+.score-bar-fill.shopping { background: linear-gradient(90deg, #fa8c16, #d46b08); }
+.score-bar-fill.environment { background: linear-gradient(90deg, #52c41a, #389e0d); }
+
+.score-num {
+  width: 60rpx;
+  text-align: right;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.total-score {
+  text-align: center;
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid var(--border-color);
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.score-big {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* 趋势图 */
+.trend-chart {
+  height: 240rpx;
+  display: flex;
+  align-items: flex-end;
+  padding: 20rpx 0;
+}
+
+.trend-bars {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 200rpx;
+  gap: 8rpx;
+  padding-bottom: 40rpx;
+}
+
+.trend-bar-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.trend-bar {
+  width: 100%;
+  max-width: 60rpx;
+  min-height: 8rpx;
+  border-radius: 4rpx 4rpx 0 0;
+}
+
+.trend-date {
+  font-size: 18rpx;
+  color: var(--text-light);
+  margin-top: 8rpx;
+  position: absolute;
+  bottom: 0;
+}
+
+.trend-bar-wrapper {
+  position: relative;
+}
+
+.trend-summary {
+  padding: 16rpx;
+  background: var(--bg-gray);
+  border-radius: var(--radius-sm);
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.trend-suggestion {
+  display: block;
+  margin-top: 8rpx;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.empty-hint {
+  text-align: center;
+  padding: 32rpx;
+  font-size: 24rpx;
+  color: var(--text-light);
+}
+
+.mini-btn {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  font-size: 24rpx;
+  border: none;
+  border-radius: 24rpx;
+}
+
+.mini-btn::after {
+  border: none;
+}
+
+/* 备注 */
+.remark-content {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* 记录时间 */
+.record-time {
+  text-align: center;
+  padding: 24rpx;
+  font-size: 22rpx;
+  color: var(--text-light);
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: var(--bg-white);
+  padding: 16rpx 0;
+  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.08);
+  z-index: 100;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8rpx 0;
+}
+
+.action-btn:active {
+  opacity: 0.7;
+}
+
+.action-icon {
+  font-size: 36rpx;
+  margin-bottom: 4rpx;
+}
+
+.action-btn text:last-child {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}
+
+.action-danger:active {
+  opacity: 0.7;
+}

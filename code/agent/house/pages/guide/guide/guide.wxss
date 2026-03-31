@@ -1,0 +1,222 @@
+/* pages/guide/guide/guide.wxss */
+
+.flow-steps { display: flex; flex-direction: column; gap: 16rpx; }
+.flow-step { display: flex; align-items: center; gap: 20rpx; }
+.step-num {
+  width: 48rpx; height: 48rpx; border-radius: 50%; background: var(--primary-color);
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font-size: 24rpx; font-weight: 700; flex-shrink: 0;
+}
+.step-content { flex: 1; }
+.step-title { font-size: 28rpx; font-weight: 600; color: var(--text-primary); display: block; }
+.step-desc { font-size: 24rpx; color: var(--text-light); display: block; margin-top: 4rpx; }
+
+.guide-card { background: var(--bg-white); border-radius: var(--radius-md); margin-bottom: 16rpx; box-shadow: var(--shadow); overflow: hidden; }
+.guide-header {
+  display: flex; align-items: center; padding: 24rpx; gap: 16rpx;
+}
+.guide-icon { font-size: 36rpx; flex-shrink: 0; }
+.guide-title { flex: 1; font-size: 30rpx; font-weight: 600; color: var(--text-primary); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.guide-arrow { font-size: 24rpx; color: var(--text-light); transition: transform 0.3s; flex-shrink: 0; }
+.guide-arrow.open { transform: rotate(90deg); }
+
+/* 自定义攻略操作按钮 */
+.custom-actions {
+  display: flex;
+  gap: 12rpx;
+  flex-shrink: 0;
+}
+.action-btn {
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+}
+.edit-btn {
+  color: var(--primary-color);
+  background: rgba(24, 144, 255, 0.08);
+}
+.del-btn {
+  color: var(--error-color, #f5222d);
+  background: rgba(245, 34, 45, 0.08);
+}
+
+.guide-body { padding: 0 24rpx 24rpx; animation: fadeIn 0.3s ease; }
+.guide-line { font-size: 26rpx; color: var(--text-secondary); line-height: 1.8; display: block; }
+
+/* 我的攻略区段标题 */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-count {
+  font-size: 24rpx;
+  color: var(--text-light);
+  font-weight: 400;
+}
+
+/* 添加攻略按钮 */
+.add-guide-section {
+  padding: 0 24rpx;
+  margin-bottom: 16rpx;
+}
+.add-guide-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 28rpx;
+  background: #fff;
+  border-radius: var(--radius-md);
+  border: 2rpx dashed var(--border-color);
+  box-shadow: var(--shadow);
+}
+.add-guide-btn:active { opacity: 0.7; }
+.add-icon {
+  font-size: 36rpx;
+  font-weight: 300;
+  color: var(--primary-color);
+}
+.add-text {
+  font-size: 28rpx;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* 清单 */
+.checklist { margin-bottom: 24rpx; }
+.check-item { display: flex; align-items: center; gap: 16rpx; padding: 16rpx 0; border-bottom: 1rpx solid var(--border-color); }
+.check-item:last-child { border-bottom: none; }
+.checkbox {
+  width: 40rpx; height: 40rpx; border-radius: 8rpx; border: 2rpx solid var(--border-color);
+  display: flex; align-items: center; justify-content: center; font-size: 24rpx; color: #fff; flex-shrink: 0;
+}
+.checkbox.checked { background: var(--success-color); border-color: var(--success-color); }
+.check-text { font-size: 28rpx; color: var(--text-primary); }
+.check-text.checked { color: var(--text-light); text-decoration: line-through; }
+
+.check-progress { font-size: 24rpx; color: var(--text-light); }
+.progress-bar {
+  height: 12rpx; background: var(--bg-gray); border-radius: 6rpx; margin-top: 12rpx; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: var(--success-color); border-radius: 6rpx; transition: width 0.3s ease;
+}
+
+/* ========== 新增攻略弹窗 ========== */
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-content {
+  width: 100%;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.modal-close {
+  font-size: 32rpx;
+  color: var(--text-light);
+  padding: 8rpx;
+}
+.modal-body {
+  padding: 24rpx 32rpx;
+}
+.form-label {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+/* 图标选择器 */
+.icon-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+.icon-item {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+  border: 2rpx solid transparent;
+}
+.icon-item.active {
+  background: rgba(24, 144, 255, 0.08);
+  border-color: var(--primary-color);
+}
+.icon-item:active { opacity: 0.7; }
+
+.modal-input {
+  width: 100%;
+  height: 80rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  margin-bottom: 24rpx;
+  box-sizing: border-box;
+}
+.modal-textarea {
+  width: 100%;
+  min-height: 240rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: 24rpx;
+  box-sizing: border-box;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 24rpx;
+  padding: 0 32rpx 32rpx;
+}
+.modal-btn {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+.cancel-btn {
+  background: #f5f5f5;
+  color: var(--text-secondary);
+}
+.confirm-btn {
+  background: var(--primary-color);
+  color: #fff;
+}
+.modal-btn:active { opacity: 0.8; }

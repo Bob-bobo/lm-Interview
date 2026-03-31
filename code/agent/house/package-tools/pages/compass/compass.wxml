@@ -1,0 +1,2 @@
+<!-- package-tools/pages/compass/compass.wxml -->
+<view class="page-wrapper"><view class="container"><view class="section"><view class="section-title">🧭 朝向指南</view><view class="info-text">• 南向：采光最好，最热门朝向\n• 南北通透：通风采光俱佳，最受青睐\n• 东南/西南：采光不错，适合多数家庭\n• 东向：上午采光好，下午偏暗\n• 西向：下午西晒，夏季较热\n• 北向：采光最差，但通风可能较好\n\n💡 建议：优先选择南向或南北通透的户型</view></view></view></view>

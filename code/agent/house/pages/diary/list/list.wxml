@@ -1,0 +1,43 @@
+<!-- pages/diary/list/list.wxml - 看房日记列表 -->
+<view class="page-wrapper">
+  <view class="container">
+    <view class="section" wx:if="{{diaries.length > 0}}">
+      <view class="flex-between mb-16">
+        <view class="section-title" style="margin-bottom:0">📝 看房日记 ({{diaries.length}})</view>
+      </view>
+
+      <view class="diary-card" wx:for="{{diaries}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+        <view class="diary-header">
+          <view class="diary-house">{{item.houseName || '未关联房源'}}</view>
+          <text class="diary-date">{{item.dateStr}}</text>
+        </view>
+        <view class="diary-content">{{item.content}}</view>
+        <view class="diary-footer">
+          <view class="diary-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+            <text class="tag tag-primary" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="index">{{tag}}</text>
+          </view>
+          <view class="diary-images" wx:if="{{item.images && item.images.length > 0}}">
+            <text class="image-count">📸 {{item.images.length}}</text>
+          </view>
+        </view>
+        <view class="diary-rating" wx:if="{{item.rating}}">
+          <text class="stars">{{item.ratingStars}}</text>
+          <text class="rating-text">{{item.ratingLabel}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{diaries.length === 0}}">
+      <text class="icon">📝</text>
+      <view class="text">
+        <text>还没有看房日记\n</text>
+        <text>每次看房后记录感受，帮助回顾比较</text>
+      </view>
+      <button class="btn-primary mt-32" style="width:300rpx" bindtap="goToAdd">+ 写日记</button>
+    </view>
+  </view>
+
+  <view class="fab safe-bottom" bindtap="goToAdd">
+    <text style="font-size:48rpx">+</text>
+  </view>
+</view>
