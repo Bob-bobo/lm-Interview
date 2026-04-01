@@ -1,0 +1,41 @@
+<!-- pages/ai/chat/chat.wxml - AI对话 -->
+<view class="page-wrapper">
+  <scroll-view scroll-y class="chat-messages" scroll-into-view="{{scrollToId}}" scroll-with-animation>
+    <!-- 欢迎消息 -->
+    <view class="message bot" wx:if="{{messages.length === 0}}">
+      <view class="message-avatar">🤖</view>
+      <view class="message-bubble">
+        <text>你好！我是AI买房助手 🏠\n\n我可以帮你：\n• 分析你的购房需求\n• 从已收藏房源中推荐最合适的\n• 分析房价走势\n• 计算贷款和税费\n• 提供购房建议\n\n试试告诉我你的购房需求吧！</text>
+      </view>
+    </view>
+
+    <!-- 消息列表 -->
+    <view class="message {{item.role}}" wx:for="{{messages}}" wx:key="index" id="msg-{{index}}">
+      <view class="message-avatar">{{item.role === 'user' ? '👤' : '🤖'}}</view>
+      <view class="message-bubble">
+        <text>{{item.content}}</text>
+      </view>
+    </view>
+
+    <view id="msg-bottom"></view>
+  </scroll-view>
+
+  <!-- 快捷提问 -->
+  <view class="quick-questions" wx:if="{{messages.length === 0}}">
+    <scroll-view scroll-x class="quick-scroll">
+      <view class="quick-chip" bindtap="askQuestion" data-text="现在适合买房吗？市场趋势怎么样">📈 市场趋势</view>
+      <view class="quick-chip" bindtap="askQuestion" data-text="买房要注意哪些坑？">⚠️ 避坑指南</view>
+      <view class="quick-chip" bindtap="askQuestion" data-text="等额本息和等额本金哪个更划算？">💰 还款方式</view>
+      <view class="quick-chip" bindtap="askQuestion" data-text="公积金贷款有什么优势？">🏦 公积金贷款</view>
+      <view class="quick-chip" bindtap="askQuestion" data-text="学区房怎么选？">🏫 学区房</view>
+    </scroll-view>
+  </view>
+
+  <!-- 输入框 -->
+  <view class="chat-input-area safe-bottom">
+    <input class="chat-text-input" placeholder="输入你的问题..." value="{{inputText}}" bindinput="onInput" bindconfirm="sendMessage" confirm-type="send" />
+    <button class="chat-send-btn" bindtap="sendMessage" disabled="{{!inputText.trim()}}">
+      发送
+    </button>
+  </view>
+</view>

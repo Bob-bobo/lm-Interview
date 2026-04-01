@@ -1,0 +1,115 @@
+<!-- pages/trend/trend/trend.wxml - 价格走势 -->
+<view class="page-wrapper">
+  <view class="container">
+    <!-- 房源选择 -->
+    <view class="section">
+      <view class="section-title">📍 选择房源</view>
+      <picker mode="selector" range="{{houseNames}}" value="{{houseIndex}}" bindchange="onHouseSelect">
+        <view class="house-picker">
+          <text>{{houseNames[houseIndex] || '请选择房源'}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 趋势概览 -->
+    <view class="section" wx:if="{{trend}}">
+      <view class="section-title">📈 价格趋势概览</view>
+
+      <view class="trend-card">
+        <view class="trend-status">
+          <text class="trend-icon {{trend.trend === 'up' ? 'up' : trend.trend === 'down' ? 'down' : 'stable'}}">
+            {{trend.trend === 'up' ? '📈 上涨' : trend.trend === 'down' ? '📉 下跌' : '➡️ 稳定'}}
+          </text>
+        </view>
+        <text class="trend-message">{{trend.message}}</text>
+        <text class="trend-suggestion">💡 {{trend.suggestion}}</text>
+      </view>
+
+      <!-- 关键数据 -->
+      <view class="stats-grid">
+        <view class="stat-item">
+          <text class="stat-value">{{trend.currentPrice}}</text>
+          <text class="stat-label">当前价格(万)</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value price">{{trend.maxPrice}}</text>
+          <text class="stat-label">最高价(万)</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value success">{{trend.minPrice}}</text>
+          <text class="stat-label">最低价(万)</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{trend.predictedPrice}}</text>
+          <text class="stat-label">预测下月(万)</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 价格走势图 -->
+    <view class="section" wx:if="{{chartData.length > 0}}">
+      <view class="section-title">📊 价格走势图</view>
+      <view class="chart-container">
+        <!-- Y轴标签 + 柱状图 -->
+        <view class="chart-wrapper">
+          <view class="y-axis">
+            <text wx:for="{{yLabels}}" wx:key="index" class="y-label">{{item}}</text>
+          </view>
+          <view class="chart-body">
+            <view class="chart-bars">
+              <view class="bar-group" wx:for="{{chartData}}" wx:key="index">
+                <view class="bar-value">{{item.price}}万</view>
+                <view class="bar" style="height: {{item.height}}%; background: {{item.color}};"></view>
+                <text class="bar-date">{{item.dateLabel}}</text>
+              </view>
+            </view>
+            <!-- 参考线 -->
+            <view class="avg-line" style="bottom: {{avgLinePosition}}%;">
+              <text class="avg-label">均价 {{trend.avgPrice}}万</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 价格记录列表 -->
+    <view class="section" wx:if="{{priceRecords.length > 0}}">
+      <view class="flex-between mb-16">
+        <view class="section-title" style="margin-bottom:0">📋 价格记录明细</view>
+        <button class="mini-btn" size="mini" bindtap="addRecord">+ 记录价格</button>
+      </view>
+
+      <view class="record-item" wx:for="{{priceRecords}}" wx:key="index">
+        <view class="record-left">
+          <text class="record-price">{{item.price}}万</text>
+          <text class="record-date">{{item.dateStr}}</text>
+        </view>
+        <view class="record-change">
+          <text wx:if="{{item.change > 0}}" class="change-up">+{{item.change}}万 ↑</text>
+          <text wx:elif="{{item.change < 0}}" class="change-down">{{item.change}}万 ↓</text>
+          <text wx:else class="change-flat">持平</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!trend && houseIndex >= 0}}">
+      <text class="icon">📈</text>
+      <view class="text">
+        <text>暂无价格记录\n</text>
+        <text>记录每次价格变动，查看走势趋势</text>
+      </view>
+      <button class="btn-primary mt-32" style="width:300rpx" bindtap="addRecord">+ 记录价格</button>
+    </view>
+
+    <!-- 无房源 -->
+    <view class="empty-state" wx:if="{{houses.length === 0}}">
+      <text class="icon">🏠</text>
+      <view class="text">
+        <text>还没有收藏房源\n</text>
+        <text>先添加房源后才能记录价格走势</text>
+      </view>
+    </view>
+  </view>
+</view>

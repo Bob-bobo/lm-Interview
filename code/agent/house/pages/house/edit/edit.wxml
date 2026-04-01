@@ -1,0 +1,2 @@
+<!-- pages/house/edit/edit.wxml - 编辑房源（复用添加页模板） -->
+<include src="../add/add.wxml" />

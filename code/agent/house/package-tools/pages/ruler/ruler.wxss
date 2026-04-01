@@ -1,0 +1,9 @@
+.form-group { margin-bottom: 28rpx; }
+.form-label { display: block; font-size: 26rpx; color: var(--text-primary); font-weight: 500; margin-bottom: 12rpx; }
+.form-input { width: 100%; height: 80rpx; background: var(--bg-gray); border: 2rpx solid var(--border-color); border-radius: 8rpx; padding: 0 24rpx; font-size: 28rpx; box-sizing: border-box; }
+.result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16rpx; }
+.result-item { display: flex; flex-direction: column; align-items: center; padding: 20rpx; background: var(--bg-gray); border-radius: 12rpx; }
+.result-label { font-size: 24rpx; color: var(--text-light); margin-bottom: 8rpx; }
+.result-value { font-size: 30rpx; font-weight: 600; color: var(--primary-color); }
+.convert-item { padding: 16rpx 0; border-bottom: 1rpx solid var(--border-color); font-size: 26rpx; color: var(--text-secondary); }
+.convert-item:last-child { border-bottom: none; }

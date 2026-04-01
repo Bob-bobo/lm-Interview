@@ -1,0 +1,158 @@
+<!-- pages/house/compare/compare.wxml - 房源对比 -->
+<view class="page-wrapper">
+  <view class="container" wx:if="{{houses.length >= 2}}">
+    <!-- 对比标题 -->
+    <view class="compare-header">
+      <text class="compare-title">📊 房源对比（{{houses.length}}套）</text>
+      <text class="compare-subtitle">对比关键指标，帮你做最优选择</text>
+    </view>
+
+    <!-- 对比表格 -->
+    <scroll-view scroll-x class="compare-scroll">
+      <view class="compare-table" style="min-width: {{houses.length * 240 + 180}}rpx;">
+        <!-- 表头 -->
+        <view class="table-row header-row">
+          <view class="table-cell label-cell">对比项</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <view class="house-thumb">{{item.community}}</view>
+          </view>
+        </view>
+
+        <!-- 总价 -->
+        <view class="table-row">
+          <view class="table-cell label-cell">💰 总价</view>
+          <view class="table-cell value-cell price-cell" wx:for="{{houses}}" wx:key="id">
+            <text class="compare-price {{item.totalPrice === minPrice ? 'best' : ''}}">
+              {{item.totalPrice}}万
+            </text>
+            <text class="best-tag" wx:if="{{item.totalPrice === minPrice && minPrice !== maxPrice}}">最低</text>
+          </view>
+        </view>
+
+        <!-- 单价 -->
+        <view class="table-row alt">
+          <view class="table-cell label-cell">📐 单价</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text>{{item.unitPrice || '--'}}元/㎡</text>
+          </view>
+        </view>
+
+        <!-- 面积 -->
+        <view class="table-row">
+          <view class="table-cell label-cell">📐 面积</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text>{{item.area || '--'}}㎡</text>
+          </view>
+        </view>
+
+        <!-- 户型 -->
+        <view class="table-row alt">
+          <view class="table-cell label-cell">🏠 户型</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text>{{item.rooms ? item.rooms + '室' + (item.halls || 0) + '厅' : '--'}}</text>
+          </view>
+        </view>
+
+        <!-- 朝向 -->
+        <view class="table-row">
+          <view class="table-cell label-cell">🧭 朝向</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text>{{item.orientation || '--'}}</text>
+          </view>
+        </view>
+
+        <!-- 楼层 -->
+        <view class="table-row alt">
+          <view class="table-cell label-cell">🏢 楼层</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text>{{item.floor ? item.floor + '/' + item.totalFloor + '层' : '--'}}</text>
+          </view>
+        </view>
+
+        <!-- 装修 -->
+        <view class="table-row">
+          <view class="table-cell label-cell">🎨 装修</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text>{{item.decoration || '--'}}</text>
+          </view>
+        </view>
+
+        <!-- 区域 -->
+        <view class="table-row alt">
+          <view class="table-cell label-cell">📍 区域</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text>{{item.district || '--'}}</text>
+          </view>
+        </view>
+
+        <!-- 交通评分 -->
+        <view class="table-row">
+          <view class="table-cell label-cell">🚇 交通</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text class="score {{item.transportScore === maxTransport ? 'best' : ''}}">{{item.transportScore || 0}}分</text>
+          </view>
+        </view>
+
+        <!-- 教育评分 -->
+        <view class="table-row alt">
+          <view class="table-cell label-cell">🏫 教育</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text class="score {{item.educationScore === maxEducation ? 'best' : ''}}">{{item.educationScore || 0}}分</text>
+          </view>
+        </view>
+
+        <!-- 环境评分 -->
+        <view class="table-row">
+          <view class="table-cell label-cell">🌳 环境</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text class="score {{item.environmentScore === maxEnvironment ? 'best' : ''}}">{{item.environmentScore || 0}}分</text>
+          </view>
+        </view>
+
+        <!-- 综合评分 -->
+        <view class="table-row summary-row">
+          <view class="table-cell label-cell">⭐ 综合评分</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <view class="total-score-badge {{item.totalScore === maxTotal ? 'best' : ''}}">
+              {{item.totalScore}}分
+            </view>
+          </view>
+        </view>
+
+        <!-- AI推荐 -->
+        <view class="table-row recommend-row" wx:if="{{recommended}}">
+          <view class="table-cell label-cell">🤖 AI推荐</view>
+          <view class="table-cell value-cell" wx:for="{{houses}}" wx:key="id">
+            <text wx:if="{{item.id === recommended.id}}" class="recommend-badge">⭐ 最推荐</text>
+            <text wx:else class="not-recommend">--</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 分析总结 -->
+    <view class="section summary-section">
+      <view class="section-title">📝 对比分析总结</view>
+      <view class="summary-list">
+        <view class="summary-item" wx:for="{{analysis}}" wx:key="index">
+          <text class="summary-bullet">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-area safe-bottom">
+      <button class="btn-secondary action-area-btn" bindtap="goToAI">🤖 AI深度分析</button>
+    </view>
+  </view>
+
+  <!-- 不足2套 -->
+  <view class="empty-state" wx:if="{{houses.length < 2}}">
+    <text class="icon">⚖️</text>
+    <view class="text">
+      <text>请至少选择2套房源进行对比\n</text>
+      <text>在房源列表中勾选后点击"开始对比"</text>
+    </view>
+    <button class="btn-primary mt-32" style="width:300rpx" bindtap="goBack">返回列表</button>
+  </view>
+</view>

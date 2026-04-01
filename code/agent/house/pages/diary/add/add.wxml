@@ -1,0 +1,65 @@
+<!-- pages/diary/add/add.wxml - 添加看房日记 -->
+<view class="page-wrapper">
+  <view class="container">
+    <view class="section">
+      <view class="section-title">📝 看房日记</view>
+
+      <view class="form-group">
+        <text class="form-label">关联房源</text>
+        <picker mode="selector" range="{{houseNames}}" value="{{houseIndex}}" bindchange="onHouseSelect">
+          <view class="form-picker {{houseIndex >= 0 ? '' : 'placeholder'}}">
+            {{houseIndex >= 0 ? houseNames[houseIndex] : '选择关联房源（可选）'}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">看房日期</text>
+        <picker mode="date" value="{{visitDate}}" bindchange="onInput" data-field="visitDate">
+          <view class="form-picker">{{visitDate || '选择日期'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">整体评分</text>
+        <view class="rating-stars">
+          <view class="star {{rating >= star ? 'active' : ''}}" wx:for="{{5}}" wx:for-item="star" wx:key="star" bindtap="setRating" data-value="{{star}}">
+            ★
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">快速标签</text>
+        <view class="quick-tags">
+          <view class="qtag {{selectedTags.indexOf(item) >= 0 ? 'active' : ''}}" wx:for="{{quickTags}}" wx:key="index" bindtap="toggleTag" data-tag="{{item}}">
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">看房感受 <text class="required">*</text></text>
+        <textarea class="form-textarea" placeholder="记录看房的真实感受：\n• 优点是什么\n• 有什么不满意的地方\n• 中介态度如何\n• 周边环境怎样..." value="{{content}}" bindinput="onInput" data-field="content" maxlength="1000" />
+        <text class="char-count">{{content.length}}/1000</text>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">照片</text>
+        <view class="image-list">
+          <view class="image-item" wx:for="{{images}}" wx:key="index">
+            <image class="image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}" />
+            <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+          </view>
+          <view class="image-add" bindtap="chooseImage" wx:if="{{images.length < 9}}">
+            <text class="image-add-icon">+</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="submit-area safe-bottom">
+      <button class="btn-primary submit-btn" bindtap="submit">保存日记</button>
+    </view>
+  </view>
+</view>

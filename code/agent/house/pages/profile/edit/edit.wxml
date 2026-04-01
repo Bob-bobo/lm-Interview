@@ -1,0 +1,96 @@
+<!-- pages/profile/edit/edit.wxml - 用户信息编辑 -->
+<view class="edit-page">
+  <!-- 头像 -->
+  <view class="avatar-section">
+    <view class="avatar-wrapper" bindtap="changeAvatar">
+      <image class="avatar-preview" wx:if="{{avatarUrl}}" src="{{avatarUrl}}" mode="aspectFill" />
+      <view class="avatar-default" wx:else>
+        <text class="avatar-default-icon">👤</text>
+      </view>
+      <view class="avatar-badge">
+        <text class="avatar-badge-text">📷</text>
+      </view>
+    </view>
+    <text class="avatar-tip">点击更换头像</text>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="section-title">基本信息</view>
+  <view class="form-group">
+    <view class="form-item">
+      <text class="form-label">昵称</text>
+      <input class="form-input" placeholder="给自己起个名字" value="{{form.nickname}}" bindinput="onInput" data-field="nickname" maxlength="20" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">手机号</text>
+      <input class="form-input" type="number" placeholder="便于接收提醒通知" value="{{form.phone}}" bindinput="onInput" data-field="phone" maxlength="11" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">意向城市</text>
+      <picker mode="selector" range="{{cities}}" value="{{cityIndex}}" bindchange="onCityChange">
+        <view class="picker-display">
+          <text class="picker-text {{form.city ? '' : 'placeholder'}}">{{form.city || '请选择意向城市'}}</text>
+          <text class="picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">意向区域</text>
+      <picker mode="selector" range="{{districts}}" value="{{districtIndex}}" disabled="{{!form.city}}" bindchange="onDistrictChange">
+        <view class="picker-display">
+          <text class="picker-text {{form.district ? '' : 'placeholder'}}">{{form.district || (form.city ? '请选择区域' : '先选城市')}}</text>
+          <text class="picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 购房需求 -->
+  <view class="section-title">购房需求</view>
+  <view class="form-group">
+    <view class="form-item">
+      <text class="form-label">预算范围</text>
+      <view class="budget-row">
+        <input class="form-input budget-input" type="digit" placeholder="最低" value="{{form.budgetMin}}" bindinput="onBudgetInput" data-field="budgetMin" />
+        <text class="budget-sep">-</text>
+        <input class="form-input budget-input" type="digit" placeholder="最高" value="{{form.budgetMax}}" bindinput="onBudgetInput" data-field="budgetMax" />
+        <text class="budget-unit">万</text>
+      </view>
+    </view>
+    <view class="form-item">
+      <text class="form-label">意向面积</text>
+      <input class="form-input" type="digit" placeholder="如 90（平方米）" value="{{form.preferredArea}}" bindinput="onInput" data-field="preferredArea" />
+      <text class="form-unit">㎡</text>
+    </view>
+    <view class="form-item picker-item">
+      <text class="form-label">意向户型</text>
+      <picker mode="selector" range="{{roomsOptions}}" bindchange="onRoomChange">
+        <view class="picker-display">
+          <text class="picker-text">{{form.preferredRooms || '请选择'}}</text>
+          <text class="picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">意向商圈</text>
+      <input class="form-input" placeholder="如：国贸、望京、西二旗" value="{{form.preferredDistricts}}" bindinput="onInput" data-field="preferredDistricts" maxlength="100" />
+    </view>
+  </view>
+
+  <!-- 购房优先级 -->
+  <view class="section-title">购房优先级 <text class="section-hint">（最多选5个）</text></view>
+  <view class="priority-tags">
+    <view
+      class="priority-tag {{prioritySelected[item] ? 'active' : ''}}"
+      wx:for="{{priorityOptions}}"
+      wx:key="*this"
+      data-tag="{{item}}"
+      catchtap="togglePriority"
+    >{{item}}</view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-area">
+    <button class="save-btn {{loading ? 'disabled' : ''}}" bindtap="save" disabled="{{loading}}">保存</button>
+  </view>
+</view>

@@ -1,0 +1,2 @@
+/* pages/house/edit/edit.wxss - 复用添加页样式 */
+@import '../add/add.wxss';

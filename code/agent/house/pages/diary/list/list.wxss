@@ -1,0 +1,19 @@
+/* pages/diary/list/list.wxss */
+
+.diary-card {
+  background: var(--bg-white); border-radius: var(--radius-md); padding: 24rpx;
+  margin-bottom: 16rpx; box-shadow: var(--shadow);
+}
+.diary-card:active { background: var(--bg-light-gray); }
+.diary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12rpx; }
+.diary-house { font-size: 30rpx; font-weight: 600; color: var(--text-primary); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 16rpx; }
+.diary-date { font-size: 24rpx; color: var(--text-light); flex-shrink: 0; }
+.diary-content {
+  font-size: 26rpx; color: var(--text-secondary); line-height: 1.6;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.diary-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16rpx; }
+.diary-images .image-count { font-size: 22rpx; color: var(--text-light); }
+.diary-rating { display: flex; align-items: center; gap: 12rpx; margin-top: 12rpx; padding-top: 12rpx; border-top: 1rpx solid var(--border-color); }
+.stars { font-size: 28rpx; color: #faad14; letter-spacing: 4rpx; }
+.rating-text { font-size: 24rpx; color: var(--text-light); }

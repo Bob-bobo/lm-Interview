@@ -1,0 +1,187 @@
+<!-- pages/house/add/add.wxml - 添加房源 -->
+<view class="page-wrapper">
+  <view class="container">
+    <!-- 基本信息 -->
+    <view class="section">
+      <view class="section-title">📋 基本信息</view>
+
+      <!-- 城市 + 区域 -->
+      <view class="form-row">
+        <view class="form-group flex-1">
+          <text class="form-label">所在城市 <text class="required">*</text></text>
+          <picker mode="selector" range="{{cities}}" value="{{cityIndex}}" bindchange="onCityChange">
+            <view class="form-picker {{form.city ? '' : 'placeholder'}}">
+              {{form.city || '请选择城市'}}
+            </view>
+          </picker>
+        </view>
+        <view class="form-group flex-1">
+          <text class="form-label">所在区域 <text class="required">*</text></text>
+          <picker mode="selector" range="{{districts}}" value="{{districtIndex}}" disabled="{{!form.city}}" bindchange="onDistrictChange">
+            <view class="form-picker {{form.district ? '' : 'placeholder'}}">
+              {{form.district || (form.city ? '请选择区域' : '先选城市')}}
+            </view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">小区名称 <text class="required">*</text></text>
+        <input class="form-input" placeholder="请输入小区名称" value="{{form.community}}" bindinput="onInput" data-field="community" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">楼栋/房号</text>
+        <input class="form-input" placeholder="如：3号楼2单元501" value="{{form.buildingNo}}" bindinput="onInput" data-field="buildingNo" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">详细地址</text>
+        <input class="form-input" placeholder="请输入详细地址" value="{{form.address}}" bindinput="onInput" data-field="address" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">房源来源</text>
+        <view class="form-tags">
+          <view class="form-tag {{form.source === item ? 'active' : ''}}" wx:for="{{sourceOptions}}" wx:key="index" bindtap="onSourceChange" data-value="{{item}}">
+            {{item}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 房屋信息 -->
+    <view class="section">
+      <view class="section-title">🏠 房屋信息</view>
+
+      <view class="form-row">
+        <view class="form-group flex-1">
+          <text class="form-label">户型 <text class="required">*</text></text>
+          <view class="room-picker">
+            <picker mode="selector" range="{{roomOptions}}" value="{{roomIndex}}" bindchange="onRoomChange">
+              <view class="form-picker">{{form.rooms || '室'}}室</view>
+            </picker>
+            <text class="room-sep">-</text>
+            <picker mode="selector" range="{{roomOptions}}" value="{{hallIndex}}" bindchange="onHallChange">
+              <view class="form-picker">{{form.halls || '厅'}}厅</view>
+            </picker>
+          </view>
+        </view>
+        <view class="form-group flex-1">
+          <text class="form-label">朝向 <text class="required">*</text></text>
+          <picker mode="selector" range="{{orientationOptions}}" value="{{orientationIndex}}" bindchange="onOrientationChange">
+            <view class="form-picker {{form.orientation ? '' : 'placeholder'}}">
+              {{form.orientation || '请选择'}}
+            </view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">面积(㎡) <text class="required">*</text></text>
+        <input class="form-input" type="digit" placeholder="请输入建筑面积" value="{{form.area}}" bindinput="onInput" data-field="area" />
+      </view>
+
+      <view class="form-row">
+        <view class="form-group flex-1">
+          <text class="form-label">所在楼层</text>
+          <input class="form-input" type="number" placeholder="楼层" value="{{form.floor}}" bindinput="onInput" data-field="floor" />
+        </view>
+        <view class="form-group flex-1">
+          <text class="form-label">总楼层</text>
+          <input class="form-input" type="number" placeholder="总楼层" value="{{form.totalFloor}}" bindinput="onInput" data-field="totalFloor" />
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">装修情况</text>
+        <view class="form-tags">
+          <view class="form-tag {{form.decoration === item ? 'active' : ''}}" wx:for="{{decorationOptions}}" wx:key="index" bindtap="onDecorationChange" data-value="{{item}}">
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">建筑类型</text>
+        <view class="form-tags">
+          <view class="form-tag {{form.buildingType === item ? 'active' : ''}}" wx:for="{{buildingTypeOptions}}" wx:key="index" bindtap="onBuildingTypeChange" data-value="{{item}}">
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">建成年代</text>
+        <picker mode="date" fields="year" value="{{form.buildYear}}" bindchange="onInput" data-field="buildYear">
+          <view class="form-picker {{form.buildYear ? '' : 'placeholder'}}">
+            {{form.buildYear || '请选择'}}
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 价格信息 -->
+    <view class="section">
+      <view class="section-title">💰 价格信息</view>
+
+      <view class="form-group">
+        <text class="form-label">总价(万元) <text class="required">*</text></text>
+        <input class="form-input" type="digit" placeholder="请输入房屋总价" value="{{form.totalPrice}}" bindinput="onInput" data-field="totalPrice" />
+        <text class="form-hint">自动计算单价：{{unitPrice || '--'}} 元/㎡</text>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">报价来源价格(万元)</text>
+        <input class="form-input" type="digit" placeholder="中介报价/业主报价（可选）" value="{{form.askPrice}}" bindinput="onInput" data-field="askPrice" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">心理预期价(万元)</text>
+        <input class="form-input" type="digit" placeholder="您认为的合理价格" value="{{form.expectedPrice}}" bindinput="onInput" data-field="expectedPrice" />
+      </view>
+    </view>
+
+    <!-- 周边配套评分 -->
+    <view class="section">
+      <view class="section-title">⭐ 配套评分</view>
+
+      <view class="score-item" wx:for="{{scoreItems}}" wx:key="key">
+        <text class="score-label">{{item.label}}</text>
+        <view class="score-stars">
+          <view class="star {{form[item.key] >= star ? 'active' : ''}}" wx:for="{{5}}" wx:for-item="star" wx:key="star" bindtap="onScoreChange" data-key="{{item.key}}" data-value="{{star}}">
+            ★
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 备注 -->
+    <view class="section">
+      <view class="section-title">📝 备注</view>
+      <textarea class="form-textarea" placeholder="记录这个房源的优缺点、看房感受等..." value="{{form.remark}}" bindinput="onInput" data-field="remark" maxlength="500" />
+      <text class="char-count">{{form.remark.length}}/500</text>
+    </view>
+
+    <!-- 图片上传 -->
+    <view class="section">
+      <view class="section-title">📸 房源照片</view>
+      <view class="image-list">
+        <view class="image-item" wx:for="{{form.images}}" wx:key="index">
+          <image class="image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}" />
+          <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+        </view>
+        <view class="image-add" bindtap="chooseImage" wx:if="{{form.images.length < 9}}">
+          <text class="image-add-icon">+</text>
+          <text class="image-add-text">添加照片</text>
+        </view>
+      </view>
+      <text class="form-hint">最多9张，建议上传户型图、小区环境等</text>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="submit-area safe-bottom">
+      <button class="btn-primary submit-btn" bindtap="submitForm">保存房源</button>
+    </view>
+  </view>
+</view>

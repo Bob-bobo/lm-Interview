@@ -1,0 +1,125 @@
+<!-- pages/ai/analyze/analyze.wxml - AI智能助手 -->
+<view class="page-wrapper">
+  <!-- 需求分析入口 -->
+  <view class="section analyze-entry">
+    <view class="ai-avatar">🤖</view>
+    <view class="ai-welcome">
+      <text class="ai-title">AI买房助手</text>
+      <text class="ai-desc">告诉我你的购房需求，我来帮你筛选最合适的房子</text>
+    </view>
+  </view>
+
+  <!-- 快捷需求 -->
+  <view class="section">
+    <view class="section-title">💬 快捷描述你的需求</view>
+    <view class="quick-needs">
+      <view class="need-chip" bindtap="useQuickNeed" data-text="预算300万左右，想要朝阳或海淀的三居室，最好带学区">
+        💰 300万 三居 学区
+      </view>
+      <view class="need-chip" bindtap="useQuickNeed" data-text="刚需首套，预算200万以内，两居室，地铁附近，自住为主">
+        🏠 首套刚需 200万
+      </view>
+      <view class="need-chip" bindtap="useQuickNeed" data-text="投资购房，看重升值空间，交通便利，最好有商圈规划">
+        📈 投资型 房源
+      </view>
+      <view class="need-chip" bindtap="useQuickNeed" data-text="改善型住房，四居室以上，面积120平以上，环境好，有公园">
+        🌳 改善型 大户型
+      </view>
+    </view>
+  </view>
+
+  <!-- 需求输入框 -->
+  <view class="input-area safe-bottom">
+    <view class="input-wrapper">
+      <textarea class="chat-input" placeholder="描述你的购房需求，如：预算300万，三居室，朝南，带学区..." value="{{userInput}}" bindinput="onInput" maxlength="200" auto-height="{{false}}" />
+      <view class="input-footer">
+        <text class="char-limit">{{userInput.length}}/200</text>
+        <button class="send-btn {{userInput.length > 0 ? 'active' : ''}}" bindtap="analyze" disabled="{{userInput.length === 0}}">
+          开始分析
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分析结果 -->
+  <view class="section result-section" wx:if="{{analysis}}">
+    <view class="section-title">📋 需求分析结果</view>
+
+    <!-- 分析摘要 -->
+    <view class="analysis-summary">
+      <view class="summary-item" wx:if="{{analysis.budget}}">
+        <text class="summary-label">💰 预算范围</text>
+        <text class="summary-value">{{analysis.budget.min}}-{{analysis.budget.max}}万</text>
+      </view>
+      <view class="summary-item" wx:if="{{analysis.area}}">
+        <text class="summary-label">📐 面积需求</text>
+        <text class="summary-value">{{analysis.area.value}}㎡</text>
+      </view>
+      <view class="summary-item" wx:if="{{analysis.location}}">
+        <text class="summary-label">📍 目标区域</text>
+        <text class="summary-value">{{analysis.location.join('、')}}</text>
+      </view>
+      <view class="summary-item" wx:if="{{analysis.roomType}}">
+        <text class="summary-label">🏠 户型偏好</text>
+        <text class="summary-value">{{analysis.roomType}}居室</text>
+      </view>
+      <view class="summary-item" wx:if="{{analysis.priorities.length > 0}}">
+        <text class="summary-label">⭐ 关注重点</text>
+        <view class="priority-tags">
+          <text class="tag tag-primary" wx:for="{{analysis.priorities}}" wx:key="index">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- AI建议 -->
+    <view class="divider"></view>
+    <view class="suggestions">
+      <view class="suggestion-title">💡 AI建议</view>
+      <view class="suggestion-item" wx:for="{{analysis.suggestions}}" wx:key="index">
+        <text class="suggestion-dot">•</text>
+        <text class="suggestion-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 匹配房源推荐 -->
+  <view class="section recommend-section" wx:if="{{matchedHouses.length > 0}}">
+    <view class="flex-between mb-16">
+      <view class="section-title" style="margin-bottom:0">
+        🎯 推荐房源（{{matchedHouses.length}}套）
+      </view>
+    </view>
+
+    <view class="recommend-card" wx:for="{{matchedHouses}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="recommend-header">
+        <view class="recommend-rank">#{{index + 1}}</view>
+        <view class="recommend-info">
+          <text class="recommend-name">{{item.community || '未命名'}}</text>
+          <text class="recommend-brief">{{item.rooms || '?'}}室{{item.halls || 0}}厅 · {{item.area || '?'}}㎡ · {{item.orientation || '?'}}</text>
+        </view>
+        <view class="recommend-score" style="color: {{item.scoreColor}}">
+          {{item.matchScore}}%
+        </view>
+      </view>
+      <view class="recommend-price">
+        <text class="price">{{item.totalPrice}}万</text>
+        <text wx:if="{{item.unitPrice}}" class="recommend-unit-price">{{item.unitPrice}}元/㎡</text>
+      </view>
+      <view class="recommend-reasons">
+        <text class="reason-tag" wx:for="{{item.matchReasons}}" wx:for-item="reason" wx:key="index">✅ {{reason}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 无匹配结果 -->
+  <view class="section" wx:if="{{analyzed && matchedHouses.length === 0}}">
+    <view class="empty-state" style="padding:60rpx">
+      <text class="icon">🔍</text>
+      <view class="text">
+        <text>暂无匹配房源\n</text>
+        <text>请先在"房源"页面添加一些房源记录\n</text>
+        <text>或调整您的需求条件</text>
+      </view>
+    </view>
+  </view>
+</view>

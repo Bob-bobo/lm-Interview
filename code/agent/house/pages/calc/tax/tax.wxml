@@ -1,0 +1,133 @@
+<!-- pages/calc/tax/tax.wxml - 税费计算器 -->
+<view class="page-wrapper">
+  <view class="container">
+    <view class="section">
+      <view class="section-title">📋 房屋信息</view>
+
+      <view class="form-group">
+        <text class="form-label">房屋总价（万元）</text>
+        <input class="form-input" type="digit" placeholder="请输入房屋总价" value="{{totalPrice}}" bindinput="onInput" data-field="totalPrice" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">建筑面积（㎡）</text>
+        <input class="form-input" type="digit" placeholder="请输入面积" value="{{area}}" bindinput="onInput" data-field="area" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">房屋类型</text>
+        <view class="option-group">
+          <view class="option-item {{houseType === 'ordinary' ? 'active' : ''}}" bindtap="onHouseTypeChange" data-value="ordinary">
+            普通住宅
+          </view>
+          <view class="option-item {{houseType === 'non_ordinary' ? 'active' : ''}}" bindtap="onHouseTypeChange" data-value="non_ordinary">
+            非普通住宅
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">是否首套</text>
+        <view class="option-group">
+          <view class="option-item {{isFirst === true ? 'active' : ''}}" bindtap="onFirstChange" data-value="true">
+            首套
+          </view>
+          <view class="option-item {{isFirst === false ? 'active' : ''}}" bindtap="onFirstChange" data-value="false">
+            二套
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">是否家庭唯一住房</text>
+        <view class="option-group">
+          <view class="option-item {{isOnly === true ? 'active' : ''}}" bindtap="onOnlyChange" data-value="true">
+            是
+          </view>
+          <view class="option-item {{isOnly === false ? 'active' : ''}}" bindtap="onOnlyChange" data-value="false">
+            否
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">房产证持有年限</text>
+        <view class="option-group">
+          <view class="option-item {{years === 'lt2' ? 'active' : ''}}" bindtap="onYearsChange" data-value="lt2">不满2年</view>
+          <view class="option-item {{years === '2to5' ? 'active' : ''}}" bindtap="onYearsChange" data-value="2to5">2-5年</view>
+          <view class="option-item {{years === 'gt5' ? 'active' : ''}}" bindtap="onYearsChange" data-value="gt5">满5年</view>
+        </view>
+      </view>
+
+      <button class="btn-primary calc-btn" bindtap="calculate">计算税费</button>
+    </view>
+
+    <!-- 计算结果 -->
+    <view class="section result-section" wx:if="{{result}}">
+      <view class="section-title">📊 税费明细</view>
+
+      <!-- 总费用 -->
+      <view class="total-tax">
+        <text class="total-label">预计税费总计</text>
+        <text class="total-value">{{result.totalStr}}</text>
+      </view>
+
+      <!-- 分项 -->
+      <view class="tax-item">
+        <view class="tax-header">
+          <text class="tax-name">🏠 契税（买方缴纳）</text>
+          <text class="tax-amount">{{result.deedTaxStr}}</text>
+        </view>
+        <text class="tax-desc">{{result.details.deedTaxDesc}}</text>
+      </view>
+
+      <view class="tax-item">
+        <view class="tax-header">
+          <text class="tax-name">📋 增值税（卖方缴纳）</text>
+          <text class="tax-amount">{{result.valueAddedTaxStr}}</text>
+        </view>
+        <text class="tax-desc">{{result.details.vatDesc}}</text>
+      </view>
+
+      <view class="tax-item">
+        <view class="tax-header">
+          <text class="tax-name">👤 个人所得税（卖方缴纳）</text>
+          <text class="tax-amount">{{result.personalTaxStr}}</text>
+        </view>
+        <text class="tax-desc">{{result.details.personalTaxDesc}}</text>
+      </view>
+
+      <view class="tax-item">
+        <view class="tax-header">
+          <text class="tax-name">🔧 维修基金</text>
+          <text class="tax-amount">{{result.maintenanceStr}}</text>
+        </view>
+        <text class="tax-desc">{{result.details.maintenanceDesc}}</text>
+      </view>
+
+      <view class="divider"></view>
+
+      <!-- 总成本预估 -->
+      <view class="cost-summary">
+        <view class="cost-row">
+          <text>房屋总价</text>
+          <text class="cost-value">{{totalPrice}}万</text>
+        </view>
+        <view class="cost-row">
+          <text>预计税费</text>
+          <text class="cost-value price">{{result.totalStr}}</text>
+        </view>
+        <view class="cost-row total">
+          <text>购房总成本</text>
+          <text class="cost-value price">{{result.allInCostStr}}</text>
+        </view>
+      </view>
+
+      <!-- 温馨提示 -->
+      <view class="notice">
+        <text class="notice-title">⚠️ 温馨提示</text>
+        <text class="notice-text">• 以上计算结果仅供参考，实际税费以当地税务局核定为准\n• 部分城市政策可能有差异，建议咨询当地房产中介\n• 增值税和个人所得税在二手房交易中通常由卖方承担\n• 新房交易主要需缴纳契税和维修基金</text>
+      </view>
+    </view>
+  </view>
+</view>

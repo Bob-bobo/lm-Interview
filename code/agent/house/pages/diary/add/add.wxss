@@ -1,0 +1,43 @@
+/* pages/diary/add/add.wxss */
+
+.form-group { margin-bottom: 28rpx; }
+.form-label { display: block; font-size: 26rpx; color: var(--text-primary); font-weight: 500; margin-bottom: 12rpx; }
+.required { color: var(--error-color); }
+.form-picker {
+  height: 80rpx; line-height: 80rpx; background: var(--bg-gray); border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-sm); padding: 0 24rpx; font-size: 28rpx; color: var(--text-primary);
+}
+.form-picker.placeholder { color: var(--text-light); }
+
+.rating-stars { display: flex; gap: 16rpx; }
+.star { font-size: 56rpx; color: #ddd; }
+.star.active { color: #faad14; }
+
+.quick-tags { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.qtag {
+  padding: 10rpx 24rpx; border-radius: 24rpx; font-size: 24rpx;
+  background: var(--bg-gray); color: var(--text-secondary); border: 2rpx solid transparent;
+}
+.qtag.active { background: var(--primary-light); color: var(--primary-color); border-color: var(--primary-color); }
+
+.form-textarea {
+  width: 100%; height: 300rpx; background: var(--bg-gray); border: 2rpx solid var(--border-color);
+  border-radius: var(--radius-sm); padding: 20rpx; font-size: 28rpx; box-sizing: border-box; line-height: 1.6;
+}
+.char-count { display: block; text-align: right; font-size: 22rpx; color: var(--text-light); margin-top: 8rpx; }
+
+.image-list { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.image-item { position: relative; width: 180rpx; height: 180rpx; border-radius: var(--radius-sm); overflow: hidden; }
+.image { width: 100%; height: 100%; }
+.image-delete {
+  position: absolute; top: 4rpx; right: 4rpx; width: 40rpx; height: 40rpx; border-radius: 50%;
+  background: rgba(0,0,0,0.6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28rpx;
+}
+.image-add {
+  width: 180rpx; height: 180rpx; border-radius: var(--radius-sm); border: 2rpx dashed var(--border-color);
+  display: flex; align-items: center; justify-content: center; background: var(--bg-light-gray);
+}
+.image-add-icon { font-size: 56rpx; color: var(--text-light); }
+
+.submit-area { padding: 32rpx 24rpx; }
+.submit-btn { width: 100%; }

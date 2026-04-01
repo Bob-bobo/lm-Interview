@@ -1,0 +1,45 @@
+<!-- pages/reminder/reminder/reminder.wxml - 提醒管理 -->
+<view class="page-wrapper">
+  <view class="container">
+    <view class="section">
+      <view class="flex-between mb-16">
+        <view class="section-title" style="margin-bottom:0">⏰ 我的提醒</view>
+        <button class="mini-btn" size="mini" bindtap="addReminder">+ 添加</button>
+      </view>
+
+      <view class="reminder-card" wx:for="{{reminders}}" wx:key="id">
+        <view class="reminder-header">
+          <text class="reminder-title">{{item.title}}</text>
+          <text class="reminder-delete" bindtap="deleteReminder" data-id="{{item.id}}">×</text>
+        </view>
+        <text class="reminder-date">📅 {{item.dateStr}} {{item.timeStr || ''}}</text>
+        <text class="reminder-note" wx:if="{{item.note}}">{{item.note}}</text>
+        <view class="reminder-status" wx:if="{{item.done}}">
+          <text class="tag tag-success">已完成</text>
+        </view>
+      </view>
+
+      <view class="empty-state" wx:if="{{reminders.length === 0}}">
+        <text class="icon">⏰</text>
+        <view class="text">
+          <text>暂无提醒事项\n</text>
+          <text>添加购房相关的重要日期提醒</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 常用提醒模板 -->
+    <view class="section">
+      <view class="section-title">📌 快捷添加常用提醒</view>
+      <view class="template-list">
+        <view class="template-item" wx:for="{{templates}}" wx:key="index" bindtap="addFromTemplate" data-template="{{item}}">
+          <text class="template-icon">{{item.icon}}</text>
+          <view class="template-info">
+            <text class="template-name">{{item.title}}</text>
+            <text class="template-desc">{{item.desc}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,130 @@
+<!-- pages/index/index.wxml - 首页 -->
+<view class="page-wrapper">
+  <!-- 顶部欢迎区域 -->
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="greeting">
+        <text class="greeting-text">{{greeting}}</text>
+        <text class="greeting-date">{{dateStr}}</text>
+      </view>
+      <view class="house-count">
+        <text class="count-number">{{houseCount}}</text>
+        <text class="count-label">已收藏房源</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷工具入口 -->
+  <view class="section quick-tools">
+    <view class="section-title">
+      <text>🛠️ 购房工具箱</text>
+    </view>
+    <view class="tool-grid">
+      <view class="tool-item" bindtap="goToMortgage">
+        <view class="tool-icon" style="background: linear-gradient(135deg, #1890ff, #096dd9);">💰</view>
+        <text class="tool-name">房贷计算</text>
+      </view>
+      <view class="tool-item" bindtap="goToTax">
+        <view class="tool-icon" style="background: linear-gradient(135deg, #fa8c16, #d46b08);">📊</view>
+        <text class="tool-name">税费计算</text>
+      </view>
+      <view class="tool-item" bindtap="goToTrend">
+        <view class="tool-icon" style="background: linear-gradient(135deg, #52c41a, #389e0d);">📈</view>
+        <text class="tool-name">价格走势</text>
+      </view>
+      <view class="tool-item" bindtap="goToAI">
+        <view class="tool-icon" style="background: linear-gradient(135deg, #722ed1, #531dab);">🤖</view>
+        <text class="tool-name">AI助手</text>
+      </view>
+      <view class="tool-item" bindtap="goToCompare">
+        <view class="tool-icon" style="background: linear-gradient(135deg, #eb2f96, #c41d7f);">⚖️</view>
+        <text class="tool-name">房源对比</text>
+      </view>
+      <view class="tool-item" bindtap="goToDiary">
+        <view class="tool-icon" style="background: linear-gradient(135deg, #13c2c2, #006d75);">📝</view>
+        <text class="tool-name">看房日记</text>
+      </view>
+      <view class="tool-item" bindtap="goToGuide">
+        <view class="tool-icon" style="background: linear-gradient(135deg, #faad14, #d48806);">📖</view>
+        <text class="tool-name">购房攻略</text>
+      </view>
+      <view class="tool-item" bindtap="goToSurrounding">
+        <view class="tool-icon" style="background: linear-gradient(135deg, #2f54eb, #1d39c4);">🗺️</view>
+        <text class="tool-name">周边配套</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- AI智能推荐 -->
+  <view class="section ai-recommend" bindtap="goToAI">
+    <view class="ai-header">
+      <view class="ai-title">
+        <text class="ai-icon">🤖</text>
+        <text class="ai-name">AI智能推荐</text>
+      </view>
+      <text class="ai-arrow">查看详情 ></text>
+    </view>
+    <view class="ai-desc">
+      <text>告诉我你的需求，AI帮你从{{houseCount}}套房源中筛选最适合的房子</text>
+    </view>
+    <view class="ai-tags">
+      <text class="tag tag-primary">预算分析</text>
+      <text class="tag tag-primary">智能匹配</text>
+      <text class="tag tag-primary">趋势预测</text>
+      <text class="tag tag-primary">购房建议</text>
+    </view>
+  </view>
+
+  <!-- 最近房源 -->
+  <view class="section recent-houses" wx:if="{{recentHouses.length > 0}}">
+    <view class="flex-between mb-16">
+      <text class="section-title" style="margin-bottom:0">🏠 最近收藏</text>
+      <text class="view-all" bindtap="goToHouseList">查看全部 ></text>
+    </view>
+    <view class="house-card" wx:for="{{recentHouses}}" wx:key="id" bindtap="goToHouseDetail" data-id="{{item.id}}">
+      <view class="house-card-header">
+        <view class="house-name">{{item.community || item.name || '未命名房源'}}</view>
+        <view class="house-price price">{{item.totalPrice}}<text class="price-unit">万</text></view>
+      </view>
+      <view class="house-info">
+        <text wx:if="{{item.rooms}}">{{item.rooms}}室</text>
+        <text wx:if="{{item.area}}">{{item.area}}㎡</text>
+        <text wx:if="{{item.orientation}}">{{item.orientation}}</text>
+        <text wx:if="{{item.floor}}">{{item.floor}}/{{item.totalFloor}}层</text>
+        <text wx:if="{{item.decoration}}" class="tag tag-primary">{{item.decoration}}</text>
+      </view>
+      <view class="house-meta" wx:if="{{item.unitPrice}}">
+        <text>单价 {{item.unitPrice}}元/㎡</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态引导 -->
+  <view class="section" wx:if="{{houseCount === 0}}">
+    <view class="empty-state">
+      <text class="icon">🏠</text>
+      <view class="text">
+        <text>还没有收藏房源\n</text>
+        <text>点击下方按钮开始记录\n你心仪的房子吧！</text>
+      </view>
+      <button class="btn-primary mt-32" style="width:300rpx" bindtap="goToAddHouse">+ 添加房源</button>
+    </view>
+  </view>
+
+  <!-- 购房小贴士 -->
+  <view class="section tips-section">
+    <view class="section-title">
+      <text>💡 购房小贴士</text>
+    </view>
+    <view class="tip-card" wx:for="{{tips}}" wx:key="index">
+      <view class="tip-title">{{item.title}}</view>
+      <view class="tip-content">{{item.content}}</view>
+    </view>
+  </view>
+
+  <!-- 快速添加按钮 -->
+  <view class="fab safe-bottom" bindtap="goToAddHouse">
+    <text style="font-size:48rpx;">+</text>
+  </view>
+</view>
