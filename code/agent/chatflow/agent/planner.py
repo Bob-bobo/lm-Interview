@@ -116,6 +116,9 @@ class ReActPlanner:
                 end = output.rfind('}')
                 if start != -1 and end != -1:
                     output = output[start:end+1]
+                elif start == -1:
+                    # 找不到 {，直接抛出让它走文本提取
+                    raise json.JSONDecodeError("No opening brace found", output, 0)
             
             data = json.loads(output)
             
@@ -136,15 +139,30 @@ class ReActPlanner:
             step.action = data["action"]
             action_input = data.get("action_input", {})
             
-            # 如果action_input是字符串，尝试解析JSON或者包装为query参数
+            # 如果action_input是字符串，尝试解析JSON或者包装
             if isinstance(action_input, str):
-                try:
-                    action_input = json.loads(action_input)
-                except json.JSONDecodeError:
-                    # 无法解析JSON，将整个字符串作为query参数
-                    action_input = {"query": action_input.strip()}
+                action_input_str = action_input.strip()
+                # 如果action_input看起来就是单个文件名（针对file_reader）
+                if not action_input_str.startswith('{') and ',' not in action_input_str and step.action == "file_reader":
+                    action_input = {"file_path": action_input_str}
+                else:
+                    try:
+                        action_input = json.loads(action_input_str)
+                    except json.JSONDecodeError:
+                        # 无法解析JSON，默认包装为query参数
+                        if step.action == "file_reader":
+                            action_input = {"file_path": action_input_str}
+                        else:
+                            action_input = {"query": action_input_str}
             elif action_input is None:
                 action_input = {}
+            
+            # 最终确保一定是字典
+            if not isinstance(action_input, dict):
+                if step.action == "file_reader":
+                    action_input = {"file_path": str(action_input).strip()}
+                else:
+                    action_input = {}
                 
             step.action_input = action_input
         else:
@@ -157,6 +175,7 @@ class ReActPlanner:
     def _extract_from_text(self, text: str) -> PlanningStep:
         """从非JSON文本中提取信息（降级处理）"""
         step = PlanningStep(thought="")
+        step.action_input = {}  # 默认空字典
         
         # 提取Thought
         thought_match = re.search(r'Thought:\s*(.*?)(?=Action:|Final Answer:|$)', text, re.DOTALL)
@@ -177,10 +196,16 @@ class ReActPlanner:
         
         action_input_match = re.search(r'Action Input:\s*(.*)$', text, re.DOTALL)
         if action_input_match:
-            try:
-                step.action_input = json.loads(action_input_match.group(1).strip())
-            except:
-                step.action_input = {"query": action_input_match.group(1).strip()}
+            content = action_input_match.group(1).strip()
+            # 如果内容本身就是文件名，比如 "ascend_c.md"，直接作为file_path参数
+            if content and not content.startswith('{') and ',' not in content:
+                # 看起来是单个文件路径，直接包装
+                step.action_input = {"file_path": content}
+            else:
+                try:
+                    step.action_input = json.loads(content)
+                except:
+                    step.action_input = {"query": content}
         
         if step.action:
             return step

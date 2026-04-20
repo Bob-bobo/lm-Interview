@@ -123,10 +123,205 @@ def main():
     st.set_page_config(
         page_title="Agent Chat",
         page_icon="🤖",
-        layout="wide"
+        layout="wide",
+        initial_sidebar_state="expanded"
     )
     
-    st.title("🤖 大模型Agent问答系统")
+    # 自定义CSS - 科技感主题
+    st.markdown("""
+    <style>
+    /* 全局科技感样式 */
+    .stApp {
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+    }
+    
+    /* 标题样式 */
+    h1 {
+        background: linear-gradient(90deg, #00d4ff 0%, #7b61ff 50%, #00d4ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% auto;
+        animation: gradient 3s ease infinite;
+        font-weight: 700;
+        text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    }
+    
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* 聊天消息气泡 */
+    .stChatMessage {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
+        margin: 8px 0;
+        transition: all 0.3s ease;
+    }
+    
+    .stChatMessage:hover {
+        border-color: rgba(0, 212, 255, 0.5);
+        box-shadow: 0 4px 30px rgba(0, 212, 255, 0.2);
+    }
+    
+    /* 用户消息 */
+    .stChatMessage[data-testid="user-message"] {
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(123, 97, 255, 0.15) 100%);
+        border-left: 4px solid #00d4ff;
+    }
+    
+    /* AI消息 */
+    .stChatMessage[data-testid="assistant-message"] {
+        border-left: 4px solid #7b61ff;
+    }
+
+    /* 聊天消息内文字颜色为白色 */
+    .stChatMessage p,
+    .stChatMessage span,
+    .stChatMessage div {
+        color: #ffffff !important;
+    }
+
+    /* 侧边栏 */
+    .css-1d391kg {
+        background: linear-gradient(180deg, rgba(0, 212, 255, 0.05) 0%, rgba(123, 97, 255, 0.05) 100%);
+        border-right: 1px solid rgba(0, 212, 255, 0.2);
+    }
+    
+    /* 按钮样式 */
+    .stButton > button {
+        background: linear-gradient(135deg, #00d4ff 0%, #7b61ff 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5);
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0);
+    }
+    
+    /* 次要按钮（删除知识库） */
+    .stButton[data-testid="secondaryButton"] > button {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 75, 75, 0.5);
+        color: #ff4b4b;
+        box-shadow: none;
+    }
+    
+    .stButton[data-testid="secondaryButton"] > button:hover {
+        background: rgba(255, 75, 75, 0.2);
+        box-shadow: 0 4px 15px rgba(255, 75, 75, 0.3);
+    }
+    
+    /* 输入框 - 浅色背景深色文字 */
+    .stTextInput > div > div > input {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 212, 255, 0.5);
+        color: #000000;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .stTextInput > div > div > input:focus {
+        border-color: #00d4ff;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    }
+
+    /* 侧边栏标签文字颜色 */
+    .stSidebar label {
+        color: #ffffff !important;
+    }
+    
+    /* 推理过程卡片 */
+    .stExpander {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 分割线 */
+    hr {
+        border-color: rgba(0, 212, 255, 0.2);
+    }
+    
+    /* 信息提示框 */
+    .stInfo {
+        background: rgba(0, 212, 255, 0.1);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        color: #00d4ff;
+    }
+    
+    .stSuccess {
+        background: rgba(0, 255, 150, 0.1);
+        border: 1px solid rgba(0, 255, 150, 0.3);
+        color: #00ff96;
+    }
+    
+    .stError {
+        background: rgba(255, 75, 75, 0.1);
+        border: 1px solid rgba(255, 75, 75, 0.3);
+        color: #ff4b4b;
+    }
+    
+    /* 滚动条美化 */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 212, 255, 0.05);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #00d4ff, #7b61ff);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #00b4ff, #5b41ff);
+    }
+    
+    /* 加载动画 */
+    .stSpinner > div {
+        border-top-color: #00d4ff !important;
+    }
+    
+    /* 代码块 */
+    pre {
+        background: rgba(0, 0, 0, 0.3) !important;
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 8px;
+    }
+    
+    code {
+        color: #00d4ff;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # 科技感标题
+    st.markdown("""
+    <h1 style="text-align: center; font-size: 2.5em; margin-bottom: 30px;">
+        🤖 大模型Agent问答系统
+    </h1>
+    <div style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 30px; font-size: 1.1em;">
+        ReAct + RAG + 工具调用 | 完整自研Agent架构
+    </div>
+    """, unsafe_allow_html=True)
     
     # 侧边栏配置
     with st.sidebar:
@@ -161,9 +356,11 @@ def main():
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
-    if "agent" not in st.session_state:
+    # 读取配置并初始化Agent
+    config = load_config(config_path)
+    
+    if "agent" not in st.session_state or st.session_state.agent is None:
         with st.spinner("正在初始化Agent..."):
-            config = load_config(config_path)
             st.session_state.agent = init_agent(config)
             st.session_state.retriever = st.session_state.agent.retriever
     
@@ -195,7 +392,15 @@ def main():
     # 显示知识库状态
     if st.session_state.kb_loaded:
         st.info(f"当前知识库包含 {agent.retriever.count()} 个分块")
-    
+        
+        # 添加删除知识库按钮
+        if st.button("🗑️ 删除知识库", type="secondary"):
+            with st.spinner("正在清空知识库..."):
+                agent.retriever.clear()
+                st.session_state.kb_loaded = False
+                st.success("知识库已清空")
+                st.rerun()
+
     st.divider()
     
     # 显示对话历史

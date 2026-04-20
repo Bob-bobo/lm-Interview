@@ -47,11 +47,17 @@ class ToolExecutor:
             }
         
         try:
-            # 确保parameters是字典（防御性检查）
-            if not isinstance(parameters, dict):
-                # 如果不是字典，尝试包装为query参数
+            # 确保parameters是字典（多层防御性检查）
+            if parameters is None:
+                parameters = {}
+            elif not isinstance(parameters, dict):
+                # 如果不是字典，尝试包装
                 if isinstance(parameters, str):
-                    parameters = {"query": parameters}
+                    # 对于file_reader，如果是字符串很可能是file_path
+                    if tool_name == "file_reader":
+                        parameters = {"file_path": parameters.strip()}
+                    else:
+                        parameters = {"query": parameters.strip()}
                 else:
                     parameters = {}
             
