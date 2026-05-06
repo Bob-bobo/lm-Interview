@@ -1,0 +1,54 @@
+# Agent系统默认配置
+
+# LLM配置
+llm:
+  provider: "openai"  # openai / local / qwen / ernie
+  model_name: "ark-code-latest"
+  api_key: "47eab4be-02bc-47a3-8b8d-1805f664ffc2"  # 从环境变量读取优先
+  api_base: "https://ark.cn-beijing.volces.com/api/coding/v3"  # 自定义API地址
+  temperature: 0.7
+  max_tokens: 2048
+  timeout: 30
+
+# 嵌入模型配置
+embedding:
+  model_name: "BAAI/bge-large-zh-v1.5"
+  device: "cpu"  # cuda / cpu
+  batch_size: 32
+  normalize_embeddings: true
+
+# 重排序配置
+reranker:
+  model_name: "BAAI/bge-reranker-base"
+  device: "cpu"
+  top_k: 5
+
+# RAG配置
+rag:
+  vector_store_type: "chroma"  # chroma / faiss
+  persist_directory: "./data/chroma_db"
+  collection_name: "knowledge_base"
+  search_top_k: 10
+  rerank_top_k: 5
+  chunk_size: 512
+  chunk_overlap: 100
+
+# Agent配置
+agent:
+  max_iterations: 5  # 最大推理步数
+  use_memory: true
+  short_term_memory_size: 10  # 保留最近N轮对话
+  enable_reflection: true  # 启用自我反思
+  verbose: true  # 输出详细推理过程
+
+# 工具配置
+tools:
+  enable_web_search: false
+  search_api_key: "https://serpapi.com/search?engine=google"  # Google Search API / SerpAPI key
+  search_engine_id: ""
+  max_search_results: 5
+
+# 日志配置
+logging:
+  level: "INFO"
+  log_file: "./data/logs/agent.log"
