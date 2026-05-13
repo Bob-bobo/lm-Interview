@@ -1,13 +1,14 @@
 # 配置好同级文件夹下.env中的大模型API, 可参考code文件夹配套的.env.example，也可以拿前几章的案例的.env文件复用。
 from hello_agents import SimpleAgent, HelloAgentsLLM
 from dotenv import load_dotenv
+from my_llm import MyLLM
 
 if __name__=="__main__":
     # 加载环境变量
     load_dotenv()
 
     # 创建LLM实例 - 框架自动检测provider
-    llm = HelloAgentsLLM()
+    llm = MyLLM()
 
     # 或手动指定provider（可选）
     # llm = HelloAgentsLLM(provider="modelscope")
