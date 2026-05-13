@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/lm-Interview.iml" filepath="$PROJECT_DIR$/.idea/lm-Interview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/llm-to-agent.iml" filepath="$PROJECT_DIR$/.idea/llm-to-agent.iml" />
     </modules>
   </component>
 </project>
