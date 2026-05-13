@@ -1,4 +1,4 @@
-# LLM-Learning
+# LLM-to-Agent
 
 <div align="center">
 
@@ -8,7 +8,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Last Commit](https://img.shields.io/github/last-commit/yourusername/awesome-llm-learning/main)](https://github.com/yourusername/awesome-llm-learning/commits/main)
 
-> **大模型（LLM & Multimodal）学习路线、实战经验与面试指南**  
+> **大模型（LLM & Multimodal）到Agent的学习路线、实战经验与面试指南**  
 > 从入门到进阶，从理论到实践，一起探索大模型的技术边界。
 
 [English](./README.md) · [简体中文](./README_CN.md) · [快速导航](#内容概览) · [贡献指南](./CONTRIBUTING.md)
@@ -26,7 +26,7 @@
 - **学习路线模糊**：资料繁杂、迭代迅速，容易陷入碎片化学习或"从入门到放弃"的困境
 - **实践门槛高**：从模型训练到推理部署，涉及分布式系统、加速优化、MLOps 等多方面知识
 - **面试缺少参考**：大模型相关岗位（算法/工程/Infra）缺乏系统的面试经验分享
-
+- **从大语言到Agent工程化资料少**：缺少以工程化思维来解决大模型部署架构以及稳定性的资料解析
 > 本项目旨在构建一个 **结构化的大模型学习社区**，汇集：
 > - 系统性的学习路线与核心知识体系
 > - 真实的一线实战经验与踩坑记录
